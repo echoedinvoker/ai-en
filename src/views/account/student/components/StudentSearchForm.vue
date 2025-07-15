@@ -60,7 +60,7 @@ const {
 
 // 狀態選項配置
 const statusOptions = [
-  { value: 'ALL', label: '全部' },
+  { value: 'ALL', label: 'ALL' },
   { value: 'active', label: '啟用中' },
   { value: 'suspended', label: '停權中' },
   { value: 'reserved', label: '保留' }

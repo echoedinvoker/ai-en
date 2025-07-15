@@ -9,25 +9,50 @@ const router = createRouter({
       redirect: '/account/teachers',
     },
     {
-      path: '/account/teachers',
-      name: 'AccountTeachers',
-      component: () => import('@/views/account/teacher/TeachersPage.vue'),
-    },
-    {
-      path: '/account/teachers/:id',
-      name: 'AccountTeacherEdit',
-      component: () => import('@/views/account/teacher/TeacherEditPage.vue'),
-    },
-    {
-      path: '/account/students',
-      name: 'AccountStudents',
-      component: () => import('@/views/account/student/StudentsPage.vue'),
-    },
-    {
-      path: '/account/students/:id',
-      name: 'AccountStudentEdit',
-      component: () => import('@/views/account/student/StudentEditPage.vue'),
-    },
+      path: '/account',
+      children: [
+        {
+          path: 'teachers',
+          name: 'AccountTeachers',
+          component: () => import('@/views/account/teacher/TeachersPage.vue'),
+        },
+        {
+          path: 'teachers/:id',
+          name: 'AccountTeacherEdit',
+          component: () => import('@/views/account/teacher/TeacherEditPage.vue'),
+        },
+        {
+          path: 'students',
+          name: 'AccountStudents',
+          component: () => import('@/views/account/student/StudentsPage.vue'),
+        },
+        {
+          path: 'students/:id',
+          name: 'AccountStudentEdit',
+          component: () => import('@/views/account/student/StudentEditPage.vue'),
+        },
+        {
+          path: 'staff',
+          name: 'AccountStaff',
+          component: () => import('@/views/account/staff/StaffListPage.vue'),
+        },
+        {
+          path: 'staff/:id',
+          name: 'AccountStaffEdit',
+          component: () => import('@/views/account/staff/StaffMemberEditPage.vue'),
+        },
+        {
+          path: 'permissions',
+          name: 'AccountPermissions',
+          component: () => import('@/views/account/permission/PermissionListPage.vue'),
+        },
+        {
+          path: 'permissions/:id',
+          name: 'AccountStaffEdit',
+          component: () => import('@/views/account/permission/PermissionEditPage.vue'),
+        },
+      ]
+    }
   ],
 })
 

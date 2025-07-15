@@ -1,19 +1,11 @@
 <template>
-  <div class="grid grid-cols-4 gap-4 mb-4">
-    <!-- 教師 Email -->
+  <div class="grid grid-cols-5 gap-4 mb-4">
+    <!-- 權限群組名稱 -->
     <FormInput
-      v-model="searchForm.email"
-      type="email"
-      label="教師 Email"
-      placeholder="輸入教師 Email"
-    />
-
-    <!-- 教師姓名 -->
-    <FormInput
-      v-model="searchForm.name"
+      v-model="searchForm.role"
       type="text"
-      label="教師姓名"
-      placeholder="輸入教師姓名"
+      label="權限群組名稱"
+      placeholder="輸入權限群組名稱"
     />
 
     <!-- 帳號狀態 -->
@@ -23,6 +15,9 @@
       label="帳號狀態"
       :options="statusOptions"
     />
+
+    <!-- 空白欄位 -->
+    <div></div>
 
     <!-- 操作按鈕 -->
     <div class="flex items-end space-x-2">
@@ -35,9 +30,17 @@
         <Search :size="20" />
       </button>
       <button
-        @click="handleAddTeacher"
+        @click="handleReset"
+        :disabled="isFetching"
+        class="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        title="重置"
+      >
+        <RotateCcw :size="20" />
+      </button>
+      <button
+        @click="handleAddPermission"
         class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer"
-        title="新增教師"
+        title="新增權限群組"
       >
         <Plus :size="20" />
       </button>
@@ -46,17 +49,18 @@
 </template>
 
 <script setup lang="ts">
-import { Search, Plus } from 'lucide-vue-next'
+import { Search, Plus, RotateCcw } from 'lucide-vue-next'
 import FormInput from '@/components/common/FormInput.vue'
-import { useTeachersList } from '../composables/useTeachersList'
+import { usePermissionList } from '../composables/usePermissionList'
 
 // 使用 composable 獲取搜尋相關功能
 const {
   searchForm,
   isFetching,
   handleSearch,
-  handleAddTeacher,
-} = useTeachersList()
+  handleReset,
+  handleAddPermission,
+} = usePermissionList()
 
 // 狀態選項配置
 const statusOptions = [

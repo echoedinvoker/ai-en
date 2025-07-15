@@ -7,7 +7,7 @@ export const mockMenuItems: MenuItem[] = [
     children: [
       { key: 'teacher-member', label: '教師會員', route: '/account/teachers' },
       { key: 'student-member', label: '學生會員', route: '/account/students' },
-      { key: 'admin-member', label: '管理人員', route: '/account/admins' },
+      { key: 'staff-member', label: '管理人員', route: '/account/staff' },
       { key: 'group-permission', label: '群組權限', route: '/account/permissions' }
     ]
   },
