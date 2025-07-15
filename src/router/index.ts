@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/account/teachers/:id',
       name: 'AccountTeacherEdit',
       component: () => import('@/views/account/TeacherEditPage.vue'),
+    },
+    {
+      path: '/account/students',
+      name: 'AccountStudents',
+      component: () => import('@/views/account/StudentsPage.vue'),
     }
   ],
 })
