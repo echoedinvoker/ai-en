@@ -101,7 +101,9 @@ export function useTeachersList() {
     }
   }
 
-  const handlePageSizeChange = () => {
+  const handlePageSizeChange = (newPageSize: number) => {
+    console.log('更新分頁大小:', newPageSize) // 調試用
+    pagination.value.pageSize = newPageSize
     pagination.value.currentPage = 1
   }
 
@@ -158,14 +160,6 @@ export function useTeachersList() {
     }
   }
 
-  // 監聽分頁變化，自動重新獲取資料
-  watch(
-    () => pagination.value.pageSize,
-    () => {
-      handlePageSizeChange()
-    }
-  )
-
   return {
     // 狀態
     searchForm,
@@ -196,4 +190,3 @@ export function useTeachersList() {
     refetch,
   }
 }
-
