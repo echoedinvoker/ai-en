@@ -65,6 +65,9 @@ export interface RolePermissions {
   dataManagement: DataManagement;        // 資料管理
   backendSettings: BackendSettings;      // 後台設定
   platformData: PlatformData;            // 平台數據
+
+  // 添加索引簽名以支援動態字串索引存取
+  [key: string]: any;
 }
 
 export interface PermissionForm {
