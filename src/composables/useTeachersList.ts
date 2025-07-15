@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTeachersListQuery } from './useTeachersQuery'
-import type { TeacherListItem, TeacherSearchParams } from '@/data/mockTeachers'
+import type { TeacherListItem, TeacherSearchParams } from '@/data/mockTeachersList'
 
 export interface SearchForm {
   email: string

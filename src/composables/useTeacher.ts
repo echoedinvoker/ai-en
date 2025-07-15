@@ -1,7 +1,8 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
-import { teacherApi, type TeacherForm } from '@/data/mockTeachers'
+// 修正匯入路徑和名稱
+import { teacherDetailApi, type TeacherForm } from '@/data/mockTeacherDetails'
 
 export function useTeacher(teacherId?: string | number) {
   const route = useRoute()
@@ -29,13 +30,13 @@ export function useTeacher(teacherId?: string | number) {
     refetch
   } = useQuery({
     queryKey: ['teacher', id.value],
-    queryFn: () => teacherApi.getTeacher(id.value),
-    enabled: computed(() => id.value > 0), // 只有當 ID 有效時才執行查詢
+    queryFn: () => teacherDetailApi.getTeacher(id.value), // 使用新的 API
+    enabled: computed(() => id.value > 0),
     select: (data) => {
       console.log('獲取教師資料:', data)
       return data
     },
-    staleTime: 5 * 60 * 1000, // 5 分鐘內認為資料是新鮮的
+    staleTime: 5 * 60 * 1000,
   })
 
   // 使用 useMutation 處理更新
@@ -44,14 +45,14 @@ export function useTeacher(teacherId?: string | number) {
     isPending: saving,
     error: saveError
   } = useMutation({
-    mutationFn: teacherApi.updateTeacher,
+    mutationFn: teacherDetailApi.updateTeacher, // 使用新的 API
     onSuccess: (updatedTeacher) => {
       // 更新快取中的資料
       queryClient.setQueryData(['teacher', id.value], updatedTeacher)
 
-      // 可選：使相關查詢失效，觸發重新獲取
+      // 使相關查詢失效，觸發重新獲取
       queryClient.invalidateQueries({
-        queryKey: ['teachers'] // 如果有教師列表查詢
+        queryKey: ['teachers-list'] // 更新為新的 queryKey
       })
     },
     onError: (error) => {
@@ -127,3 +128,4 @@ export function useTeacher(teacherId?: string | number) {
     refetch
   }
 }
+
