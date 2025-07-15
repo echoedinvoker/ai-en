@@ -31,6 +31,10 @@ export function useTeacher(teacherId?: string | number) {
     queryKey: ['teacher', id.value],
     queryFn: () => teacherApi.getTeacher(id.value),
     enabled: computed(() => id.value > 0), // 只有當 ID 有效時才執行查詢
+    select: (data) => {
+      console.log('獲取教師資料:', data)
+      return data
+    },
     staleTime: 5 * 60 * 1000, // 5 分鐘內認為資料是新鮮的
   })
 

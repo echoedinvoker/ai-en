@@ -1,16 +1,24 @@
 <template>
-  <div v-if="teacherData" class="bg-white rounded-lg shadow p-6">
+  <div v-if="loading" class="bg-white rounded-lg shadow p-6">
+    <div class="text-center">載入中...</div>
+  </div>
+
+  <div v-else-if="error" class="bg-white rounded-lg shadow p-6">
+    <div class="text-red-500">錯誤: {{ error.message }}</div>
+  </div>
+
+  <div v-else-if="teacherData" class="bg-white rounded-lg shadow p-6">
     <div class="grid grid-cols-[2fr_2fr_1fr] gap-6">
       <!-- 第一行 -->
       <FormInput
-        :value="teacherData.email"
+        :modelValue="teacherData.email"
         type="email"
         label="教師 Email"
         disabled
         @update:modelValue="updateField('email', $event)"
       />
       <FormInput
-        :value="teacherData.name"
+        :modelValue="teacherData.name"
         type="text"
         label="教師姓名"
         @update:modelValue="updateField('name', $event)"
@@ -19,14 +27,14 @@
 
       <!-- 第二行 -->
       <FormInput
-        :value="teacherData.subscriptionStartDate"
+        :modelValue="teacherData.subscriptionStartDate"
         type="date"
         label="本次訂閱開始日期"
         disabled
         @update:modelValue="updateField('subscriptionStartDate', $event)"
       />
       <FormInput
-        :value="teacherData.subscriptionEndDate"
+        :modelValue="teacherData.subscriptionEndDate"
         type="date"
         label="本次訂閱結束日期"
         disabled
@@ -34,7 +42,7 @@
       />
       <div class="flex items-end">
         <button
-          @click="$emit('subscription-history')"
+          @click="viewSubscriptionHistory"
           class="px-4 py-2 bg-gray-600 text-white border border-gray-600 rounded-md hover:bg-gray-700 hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-all duration-200 whitespace-nowrap cursor-pointer -ml-2"
         >
           訂閱紀錄
@@ -43,14 +51,14 @@
 
       <!-- 第三行 -->
       <FormInput
-        :value="teacherData.subscriptionAmount"
+        :modelValue="teacherData.subscriptionAmount"
         type="number"
         label="本次訂閱付費金額"
         disabled
         @update:modelValue="updateField('subscriptionAmount', $event)"
       />
       <FormInput
-        :value="teacherData.manualEndDate"
+        :modelValue="teacherData.manualEndDate"
         type="date"
         label="人為訂閱結束日期"
         @update:modelValue="updateField('manualEndDate', $event)"
@@ -59,7 +67,7 @@
 
       <!-- 第四行 -->
       <FormInput
-        :value="teacherData.refundStatus"
+        :modelValue="teacherData.refundStatus"
         type="text"
         label="本次訂閱退費情形"
         disabled
@@ -70,13 +78,13 @@
 
       <!-- 第五行 -->
       <FormInput
-        :value="teacherData.trialEssayCount"
+        :modelValue="teacherData.trialEssayCount"
         type="number"
         label="開通試用作文次數"
         @update:modelValue="updateField('trialEssayCount', $event)"
       />
       <FormInput
-        :value="teacherData.usedTrialEssayCount"
+        :modelValue="teacherData.usedTrialEssayCount"
         type="number"
         label="已使用試用作文次數"
         disabled
@@ -86,14 +94,14 @@
 
       <!-- 第六行 -->
       <FormInput
-        :value="teacherData.createdAt"
+        :modelValue="teacherData.createdAt"
         type="datetime-local"
         label="建立時間"
         disabled
         @update:modelValue="updateField('createdAt', $event)"
       />
       <FormInput
-        :value="teacherData.createdBy"
+        :modelValue="teacherData.createdBy"
         type="text"
         label="建立人員"
         disabled
@@ -103,14 +111,14 @@
 
       <!-- 第七行 -->
       <FormInput
-        :value="teacherData.updatedAt"
+        :modelValue="teacherData.updatedAt"
         type="datetime-local"
         label="最近修改時間"
         disabled
         @update:modelValue="updateField('updatedAt', $event)"
       />
       <FormInput
-        :value="teacherData.updatedBy"
+        :modelValue="teacherData.updatedBy"
         type="text"
         label="最近修改人員"
         disabled
@@ -118,7 +126,7 @@
       />
       <div class="flex items-end">
         <button
-          @click="$emit('view-logs')"
+          @click="viewLogs"
           class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 whitespace-nowrap cursor-pointer -ml-2"
         >
           LOG
@@ -127,7 +135,7 @@
 
       <!-- 第八行 -->
       <FormInput
-        :value="teacherData.status"
+        :modelValue="teacherData.status"
         type="select"
         label="帳號狀態"
         :options="statusOptions"
@@ -139,13 +147,13 @@
       <!-- 操作按鈕 -->
       <div class="col-span-2 mt-8 flex justify-end gap-4">
         <button
-          @click="$emit('cancel')"
+          @click="handleCancel"
           class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer"
         >
           取消
         </button>
         <button
-          @click="$emit('save')"
+          @click="handleSave"
           :disabled="!canSave || saving"
           class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
         >
@@ -154,26 +162,27 @@
       </div>
     </div>
   </div>
+
+  <div v-else class="bg-white rounded-lg shadow p-6">
+    <div class="text-gray-500">無教師資料</div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import FormInput from './FormInput.vue'
+import FormInput from '@/components/common/FormInput.vue'
 import { useTeacher } from '@/composables/useTeacher'
 
-// 使用 composable
 const {
   teacherData,
+  loading,
+  error,
   statusOptions,
   canSave,
   saving,
-  updateField
+  updateField,
+  handleSave,
+  handleCancel,
+  viewSubscriptionHistory,
+  viewLogs
 } = useTeacher()
-
-// 定義 emits
-defineEmits<{
-  save: []
-  cancel: []
-  'subscription-history': []
-  'view-logs': []
-}>()
 </script>

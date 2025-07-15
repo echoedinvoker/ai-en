@@ -22,13 +22,7 @@
     </div>
 
     <!-- 教師表單 -->
-    <TeacherForm
-      v-else-if="teacherData"
-      @save="handleSave"
-      @cancel="handleCancel"
-      @subscription-history="viewSubscriptionHistory"
-      @view-logs="viewLogs"
-    />
+    <TeacherForm v-else-if="teacherData" />
 
     <!-- 儲存錯誤提示 -->
     <div v-if="saveError" class="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
@@ -39,21 +33,16 @@
 
 <script setup lang="ts">
 import { ArrowLeft } from 'lucide-vue-next'
-import TeacherForm from '@/components/common/TeacherForm.vue'
+import TeacherForm from './components/TeacherForm.vue' // 更新 import 路徑
 import { useTeacher } from '@/composables/useTeacher'
 
 // 使用 composable
 const {
   teacherData,
   loading,
-  saving,
   error,
   saveError,
-  handleSave,
   goBack,
-  handleCancel,
-  viewSubscriptionHistory,
-  viewLogs,
   refetch
 } = useTeacher()
 

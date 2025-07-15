@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTeachersListQuery } from './useTeachersQuery'
 import type { TeacherListItem, TeacherSearchParams } from '@/data/mockTeachers'
@@ -14,27 +14,26 @@ export interface Pagination {
   pageSize: number
 }
 
+// 模塊級別的狀態（單例模式）
+const searchForm = ref<SearchForm>({
+  email: '',
+  name: '',
+  status: 'ALL',
+})
+
+const activeSearchForm = ref<SearchForm>({
+  email: '',
+  name: '',
+  status: 'ALL',
+})
+
+const pagination = ref<Pagination>({
+  currentPage: 1,
+  pageSize: 10,
+})
+
 export function useTeachersList() {
   const router = useRouter()
-
-  // 搜尋表單狀態
-  const searchForm = ref<SearchForm>({
-    email: '',
-    name: '',
-    status: 'ALL',
-  })
-
-  const activeSearchForm = ref<SearchForm>({
-    email: '',
-    name: '',
-    status: 'ALL',
-  })
-
-  // 分頁狀態
-  const pagination = ref<Pagination>({
-    currentPage: 1,
-    pageSize: 10,
-  })
 
   // 構建查詢參數
   const queryParams = computed<TeacherSearchParams>(() => ({
@@ -77,12 +76,10 @@ export function useTeachersList() {
     const pages: number[] = []
 
     if (total <= 5) {
-      // 總頁數小於等於5，顯示所有頁面
       for (let i = 1; i <= total; i++) {
         pages.push(i)
       }
     } else {
-      // 總頁數大於5，顯示當前頁面前後2頁
       const start = Math.max(1, current - 2)
       const end = Math.min(total, current + 2)
 
@@ -102,7 +99,7 @@ export function useTeachersList() {
   }
 
   const handlePageSizeChange = (newPageSize: number) => {
-    console.log('更新分頁大小:', newPageSize) // 調試用
+    console.log('更新分頁大小:', newPageSize)
     pagination.value.pageSize = newPageSize
     pagination.value.currentPage = 1
   }
@@ -161,7 +158,7 @@ export function useTeachersList() {
   }
 
   return {
-    // 狀態
+    // 狀態（現在是共享的）
     searchForm,
     activeSearchForm,
     pagination,
@@ -190,3 +187,4 @@ export function useTeachersList() {
     refetch,
   }
 }
+
