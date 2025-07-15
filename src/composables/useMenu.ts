@@ -1,4 +1,7 @@
+import { fetchMenuItems } from '@/data/menuData';
+import { useQuery } from '@tanstack/vue-query';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 // 菜單項目類型定義
 export interface MenuItem {
@@ -11,47 +14,6 @@ export interface MenuItem {
   }>;
 }
 
-// 將菜單資料定義在函數外部，實現全域共享狀態
-const menuItems = ref<MenuItem[]>([
-  {
-    key: 'account-management',
-    label: '會員帳號管理',
-    children: [
-      { key: 'teacher-member', label: '教師會員', route: '/account/teachers' },
-      { key: 'student-member', label: '學生會員', route: '/account/students' },
-      { key: 'admin-member', label: '管理人員', route: '/account/admins' },
-      { key: 'group-permission', label: '群組權限', route: '/account/permissions' }
-    ]
-  },
-  {
-    key: 'data-management',
-    label: '資料管理',
-    children: [
-      { key: 'question-bank', label: '題庫管理', route: '/data/questions' },
-      { key: 'class-management', label: '班級管理', route: '/data/classes' },
-      { key: 'exam-management', label: '試題管理', route: '/data/exams' },
-      { key: 'essay-management', label: '作文管理', route: '/data/essays' }
-    ]
-  },
-  {
-    key: 'backend-settings',
-    label: '後台設定',
-    children: [
-      { key: 'push-notification', label: '推播訊息', route: '/backend/notifications' },
-      { key: 'system-announcement', label: '系統公告', route: '/backend/announcements' },
-      { key: 'subscription-settings', label: '訂閱設定', route: '/backend/subscriptions' }
-    ]
-  },
-  {
-    key: 'platform-data',
-    label: '平台數據',
-    children: [
-      { key: 'dashboard', label: '數據儀表板', route: '/platform/dashboard' },
-      { key: 'feedback', label: '功能滿意度回饋', route: '/platform/feedback' }
-    ]
-  }
-]);
-
 // 當前選中的項目狀態
 const activeParentKey = ref('account-management');
 const activeChildKey = ref('teacher-member');
@@ -60,8 +22,22 @@ const activeChildKey = ref('teacher-member');
 const expandedItems = ref(new Set([activeParentKey.value]));
 
 export function useMenu() {
+  const router = useRouter();
+
+  // 使用 TanStack Query 獲取菜單資料
+  const {
+    data: menuItems,
+    isLoading,
+    error,
+    refetch
+  } = useQuery({
+    queryKey: ['menu-items'],
+    queryFn: fetchMenuItems,
+  });
+
   // 計算當前的 breadcrumb
   const currentBreadcrumb = computed(() => {
+    if (!menuItems.value) return { parent: '', child: '' };
     const parent = menuItems.value.find(item => item.key === activeParentKey.value);
     const child = parent?.children.find(item => item.key === activeChildKey.value);
     return {
@@ -72,6 +48,7 @@ export function useMenu() {
 
   // 計算當前選中項目的完整資訊
   const currentMenuItem = computed(() => {
+    if (!menuItems.value) return { parent: null, child: null, route: '' };
     const parent = menuItems.value.find(item => item.key === activeParentKey.value);
     const child = parent?.children.find(item => item.key === activeChildKey.value);
     return {
@@ -99,10 +76,20 @@ export function useMenu() {
     if (!expandedItems.value.has(parentKey)) {
       expandedItems.value.add(parentKey);
     }
+
+    // 找到對應的子項目並進行導航
+    if (!menuItems.value) return;
+    const parent = menuItems.value.find(item => item.key === parentKey);
+    const child = parent?.children.find(item => item.key === childKey);
+
+    if (child?.route) {
+      router.push({ path: child.route }); // 使用 route 屬性進行導航
+    }
   };
 
   // 根據路由設置當前選中項目
   const setActiveByRoute = (route: string) => {
+    if (!menuItems.value) return;
     for (const parent of menuItems.value) {
       const child = parent.children.find(item => item.route === route);
       if (child) {
