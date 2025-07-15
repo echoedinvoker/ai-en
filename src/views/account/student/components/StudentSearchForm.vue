@@ -1,19 +1,19 @@
 <template>
   <div class="grid grid-cols-4 gap-4 mb-4">
-    <!-- 教師 Email -->
+    <!-- 學生 Email -->
     <FormInput
       v-model="searchForm.email"
       type="email"
-      label="教師 Email"
-      placeholder="輸入教師 Email"
+      label="學生 Email"
+      placeholder="輸入學生 Email"
     />
 
-    <!-- 教師姓名 -->
+    <!-- 學生姓名 -->
     <FormInput
       v-model="searchForm.name"
       type="text"
-      label="教師姓名"
-      placeholder="輸入教師姓名"
+      label="學生姓名"
+      placeholder="輸入學生姓名"
     />
 
     <!-- 帳號狀態 -->
@@ -35,9 +35,9 @@
         <Search :size="20" />
       </button>
       <button
-        @click="handleAddTeacher"
+        @click="handleAddStudent"
         class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer"
-        title="新增教師"
+        title="新增學生"
       >
         <Plus :size="20" />
       </button>
@@ -48,15 +48,15 @@
 <script setup lang="ts">
 import { Search, Plus } from 'lucide-vue-next'
 import FormInput from '@/components/common/FormInput.vue'
-import { useTeachersList } from '@/composables/useTeachersList'
+import { useStudentsList } from '../composables/useStudentsList'
 
 // 使用 composable 獲取搜尋相關功能
 const {
   searchForm,
   isFetching,
   handleSearch,
-  handleAddTeacher,
-} = useTeachersList()
+  handleAddStudent,
+} = useStudentsList()
 
 // 狀態選項配置
 const statusOptions = [

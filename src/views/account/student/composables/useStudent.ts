@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
-import { studentDetailApi, type StudentForm } from '@/data/mockStudentDetails'
+import { studentDetailApi, type StudentForm } from '../data/mockStudentDetails'
 
 export function useStudent(studentId?: string | number) {
   const route = useRoute()

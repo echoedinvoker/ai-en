@@ -45,7 +45,7 @@ import { computed } from 'vue'
 import { Edit2 } from 'lucide-vue-next'
 import DataTable from '@/components/common/DataTable.vue'
 import TeacherSearchForm from './components/TeacherSearchForm.vue'
-import { useTeachersList } from '@/composables/useTeachersList'
+import { useTeachersList } from './composables/useTeachersList'
 
 // 使用 composable
 const {

@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ArrowLeft } from 'lucide-vue-next'
 import StudentForm from './components/StudentForm.vue'
-import { useStudent } from '@/composables/useStudent'
+import { useStudent } from './composables/useStudent'
 
 // 使用 composable
 const {

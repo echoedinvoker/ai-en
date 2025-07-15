@@ -11,22 +11,22 @@ const router = createRouter({
     {
       path: '/account/teachers',
       name: 'AccountTeachers',
-      component: () => import('@/views/account/TeachersPage.vue'),
+      component: () => import('@/views/account/teacher/TeachersPage.vue'),
     },
     {
       path: '/account/teachers/:id',
       name: 'AccountTeacherEdit',
-      component: () => import('@/views/account/TeacherEditPage.vue'),
+      component: () => import('@/views/account/teacher/TeacherEditPage.vue'),
     },
     {
       path: '/account/students',
       name: 'AccountStudents',
-      component: () => import('@/views/account/StudentsPage.vue'),
+      component: () => import('@/views/account/student/StudentsPage.vue'),
     },
     {
       path: '/account/students/:id',
       name: 'AccountStudentEdit',
-      component: () => import('@/views/account/StudentEditPage.vue'),
+      component: () => import('@/views/account/student/StudentEditPage.vue'),
     },
   ],
 })

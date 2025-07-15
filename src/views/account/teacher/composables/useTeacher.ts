@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 // 修正匯入路徑和名稱
-import { teacherDetailApi, type TeacherForm } from '@/data/mockTeacherDetails'
+import { teacherDetailApi, type TeacherForm } from '../data/mockTeacherDetails'
 
 export function useTeacher(teacherId?: string | number) {
   const route = useRoute()

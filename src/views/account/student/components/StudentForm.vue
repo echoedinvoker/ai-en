@@ -7,34 +7,44 @@
     <div class="text-red-500">錯誤: {{ error.message }}</div>
   </div>
 
-  <div v-else-if="teacherData" class="bg-white rounded-lg shadow p-6">
+  <div v-else-if="studentData" class="bg-white rounded-lg shadow p-6">
     <div class="grid grid-cols-[2fr_2fr_1fr] gap-6">
       <!-- 第一行 -->
       <FormInput
-        :modelValue="teacherData.email"
+        :modelValue="studentData.email"
         type="email"
-        label="教師 Email"
+        label="學生 Email"
         disabled
         @update:modelValue="updateField('email', $event)"
       />
       <FormInput
-        :modelValue="teacherData.name"
+        :modelValue="studentData.name"
         type="text"
-        label="教師姓名"
+        label="學生姓名"
         @update:modelValue="updateField('name', $event)"
       />
       <div></div>
 
+      <!-- 密碼輸入欄位 (新增在第一行和第二行之間) -->
+      <FormInput
+        :modelValue="studentData.password || ''"
+        type="password"
+        label="密碼"
+        @update:modelValue="updateField('password', $event)"
+      />
+      <div></div>
+      <div></div>
+
       <!-- 第二行 -->
       <FormInput
-        :modelValue="teacherData.subscriptionStartDate"
+        :modelValue="studentData.subscriptionStartDate"
         type="date"
         label="本次訂閱開始日期"
         disabled
         @update:modelValue="updateField('subscriptionStartDate', $event)"
       />
       <FormInput
-        :modelValue="teacherData.subscriptionEndDate"
+        :modelValue="studentData.subscriptionEndDate"
         type="date"
         label="本次訂閱結束日期"
         disabled
@@ -51,14 +61,14 @@
 
       <!-- 第三行 -->
       <FormInput
-        :modelValue="teacherData.subscriptionAmount"
+        :modelValue="studentData.subscriptionAmount"
         type="number"
         label="本次訂閱付費金額"
         disabled
         @update:modelValue="updateField('subscriptionAmount', $event)"
       />
       <FormInput
-        :modelValue="teacherData.manualEndDate"
+        :modelValue="studentData.manualEndDate"
         type="date"
         label="人為訂閱結束日期"
         @update:modelValue="updateField('manualEndDate', $event)"
@@ -67,10 +77,9 @@
 
       <!-- 第四行 -->
       <FormInput
-        :modelValue="teacherData.refundStatus"
-        type="text"
+        :modelValue="studentData.refundStatus"
         label="本次訂閱退費情形"
-        disabled
+        :options="refundStatusOptions"
         @update:modelValue="updateField('refundStatus', $event)"
       />
       <div></div>
@@ -78,13 +87,13 @@
 
       <!-- 第五行 -->
       <FormInput
-        :modelValue="teacherData.trialEssayCount"
+        :modelValue="studentData.trialEssayCount"
         type="number"
         label="開通試用作文次數"
         @update:modelValue="updateField('trialEssayCount', $event)"
       />
       <FormInput
-        :modelValue="teacherData.usedTrialEssayCount"
+        :modelValue="studentData.usedTrialEssayCount"
         type="number"
         label="已使用試用作文次數"
         disabled
@@ -92,16 +101,23 @@
       />
       <div></div>
 
-      <!-- 第六行 -->
+      <!-- 第六行 - 作文紀錄 -->
+      <div class="flex items-center">
+        <span class="text-sm text-gray-600">剩餘試用作文: {{ remainingTrialEssays }} 次</span>
+      </div>
+      <div></div>
+      <div></div>
+
+      <!-- 第七行 -->
       <FormInput
-        :modelValue="teacherData.createdAt"
+        :modelValue="studentData.createdAt"
         type="datetime-local"
         label="建立時間"
         disabled
         @update:modelValue="updateField('createdAt', $event)"
       />
       <FormInput
-        :modelValue="teacherData.createdBy"
+        :modelValue="studentData.createdBy"
         type="text"
         label="建立人員"
         disabled
@@ -109,16 +125,16 @@
       />
       <div></div>
 
-      <!-- 第七行 -->
+      <!-- 第八行 -->
       <FormInput
-        :modelValue="teacherData.updatedAt"
+        :modelValue="studentData.updatedAt"
         type="datetime-local"
         label="最近修改時間"
         disabled
         @update:modelValue="updateField('updatedAt', $event)"
       />
       <FormInput
-        :modelValue="teacherData.updatedBy"
+        :modelValue="studentData.updatedBy"
         type="text"
         label="最近修改人員"
         disabled
@@ -133,9 +149,9 @@
         </button>
       </div>
 
-      <!-- 第八行 -->
+      <!-- 第九行 -->
       <FormInput
-        :modelValue="teacherData.status"
+        :modelValue="studentData.status"
         type="select"
         label="帳號狀態"
         :options="statusOptions"
@@ -164,25 +180,28 @@
   </div>
 
   <div v-else class="bg-white rounded-lg shadow p-6">
-    <div class="text-gray-500">無教師資料</div>
+    <div class="text-gray-500">無學生資料</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import FormInput from '@/components/common/FormInput.vue'
-import { useTeacher } from '@/composables/useTeacher'
+import { useStudent } from '../composables/useStudent'
 
 const {
-  teacherData,
+  studentData,
   loading,
   error,
   statusOptions,
+  refundStatusOptions,
   canSave,
   saving,
+  remainingTrialEssays,
   updateField,
   handleSave,
   handleCancel,
   viewSubscriptionHistory,
-  viewLogs
-} = useTeacher()
+  viewLogs,
+} = useStudent()
 </script>
+

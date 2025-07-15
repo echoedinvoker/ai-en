@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ArrowLeft } from 'lucide-vue-next'
 import TeacherForm from './components/TeacherForm.vue' // 更新 import 路徑
-import { useTeacher } from '@/composables/useTeacher'
+import { useTeacher } from './composables/useTeacher' // 更新 import 路徑
 
 // 使用 composable
 const {

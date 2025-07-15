@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { computed, type  Ref } from 'vue'
-import { studentApi, type StudentSearchParams } from '@/data/mockStudentsList'
-import { studentDetailApi } from '@/data/mockStudentDetails'
+import { studentApi, type StudentSearchParams } from '../data/mockStudentsList'
+import { studentDetailApi } from '../data/mockStudentDetails'
 
 // 學生列表 Query Hook
 export function useStudentsListQuery(searchParams: Ref<StudentSearchParams>) {
