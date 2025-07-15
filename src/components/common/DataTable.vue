@@ -14,15 +14,20 @@
     </div>
 
     <!-- Table 區 -->
-    <div v-else class="overflow-x-auto">
+    <div
+      v-else
+      ref="tableContainer"
+      class="overflow-auto"
+      :style="{ maxHeight: tableMaxHeight }"
+    >
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+        <thead class="bg-gray-50 sticky top-0 z-10">
           <tr>
             <th
               v-for="column in columns"
               :key="column.key"
               :class="[
-                'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider',
+                'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50',
                 column.align === 'center' ? 'text-center' :
                 column.align === 'right' ? 'text-right' : 'text-left'
               ]"
@@ -158,7 +163,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import Card from '@/components/common/Card.vue'
 
 // 定義 Props 介面
@@ -191,6 +196,10 @@ interface Props {
   emptyText?: string
   recordName?: string
   rowKey?: string | ((item: any, index: number) => string | number)
+
+  // 格高度相關
+  reservedHeight?: number  // 預留給其他元素的高度
+  enableStickyHeader?: boolean  // 是否啟用固定表頭
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -205,15 +214,10 @@ const props = withDefaults(defineProps<Props>(), {
   pageSizeOptions: () => [5, 10, 20, 50],
   emptyText: '沒有資料',
   recordName: '資料',
-  rowKey: 'id'
+  rowKey: 'id',
+  reservedHeight: 350,
+  enableStickyHeader: true
 })
-
-// 定義 Emits
-const emit = defineEmits<{
-  'page-change': [page: number]
-  'page-size-change': [size: number]
-  'retry': []
-}>()
 
 // 計算屬性
 const totalPages = computed(() => Math.ceil(props.totalRecords / props.pageSize))
@@ -264,5 +268,29 @@ const getRowKey = (item: any, index: number) => {
   }
   return getColumnValue(item, props.rowKey) || index
 }
+
+const windowHeight = ref(window.innerHeight)
+const tableContainer = ref<HTMLElement>()
+
+const updateWindowHeight = () => {
+  windowHeight.value = window.innerHeight
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowHeight)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowHeight)
+})
+
+// 動態計算表格最大高度
+const tableMaxHeight = computed(() => {
+  // 預留給頁面其他元素的空間（header、pagination 等）
+  if (!props.enableStickyHeader) {
+    return 'none'  // 不啟用時不限制高度
+  }
+  return `${windowHeight.value - props.reservedHeight}px`
+})
 </script>
 

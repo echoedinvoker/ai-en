@@ -10,14 +10,14 @@
   <div v-else-if="studentData" class="bg-white rounded-lg shadow p-6">
     <div class="grid grid-cols-[2fr_2fr_1fr] gap-6">
       <!-- 第一行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.email"
         type="email"
         label="學生 Email"
         disabled
         @update:modelValue="updateField('email', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.name"
         type="text"
         label="學生姓名"
@@ -26,7 +26,7 @@
       <div></div>
 
       <!-- 密碼輸入欄位 (新增在第一行和第二行之間) -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.password || ''"
         type="password"
         label="密碼"
@@ -36,14 +36,14 @@
       <div></div>
 
       <!-- 第二行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.subscriptionStartDate"
         type="date"
         label="本次訂閱開始日期"
         disabled
         @update:modelValue="updateField('subscriptionStartDate', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.subscriptionEndDate"
         type="date"
         label="本次訂閱結束日期"
@@ -51,23 +51,20 @@
         @update:modelValue="updateField('subscriptionEndDate', $event)"
       />
       <div class="flex items-end">
-        <button
-          @click="viewSubscriptionHistory"
-          class="px-4 py-2 bg-gray-600 text-white border border-gray-600 rounded-md hover:bg-gray-700 hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-all duration-200 whitespace-nowrap cursor-pointer -ml-2"
-        >
+        <BaseButton variant="gray" @click="viewSubscriptionHistory" class="-ml-2">
           訂閱紀錄
-        </button>
+        </BaseButton>
       </div>
 
       <!-- 第三行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.subscriptionAmount"
         type="number"
         label="本次訂閱付費金額"
         disabled
         @update:modelValue="updateField('subscriptionAmount', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.manualEndDate"
         type="date"
         label="人為訂閱結束日期"
@@ -76,7 +73,7 @@
       <div></div>
 
       <!-- 第四行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.refundStatus"
         label="本次訂閱退費情形"
         :options="refundStatusOptions"
@@ -86,13 +83,13 @@
       <div></div>
 
       <!-- 第五行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.trialEssayCount"
         type="number"
         label="開通試用作文次數"
         @update:modelValue="updateField('trialEssayCount', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.usedTrialEssayCount"
         type="number"
         label="已使用試用作文次數"
@@ -109,14 +106,14 @@
       <div></div>
 
       <!-- 第七行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.createdAt"
         type="datetime-local"
         label="建立時間"
         disabled
         @update:modelValue="updateField('createdAt', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.createdBy"
         type="text"
         label="建立人員"
@@ -126,14 +123,14 @@
       <div></div>
 
       <!-- 第八行 -->
-      <FormInput
+      <BaseInput
         :modelValue="studentData.updatedAt"
         type="datetime-local"
         label="最近修改時間"
         disabled
         @update:modelValue="updateField('updatedAt', $event)"
       />
-      <FormInput
+      <BaseInput
         :modelValue="studentData.updatedBy"
         type="text"
         label="最近修改人員"
@@ -141,18 +138,12 @@
         @update:modelValue="updateField('updatedBy', $event)"
       />
       <div class="flex items-end">
-        <button
-          @click="viewLogs"
-          class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 whitespace-nowrap cursor-pointer -ml-2"
-        >
-          LOG
-        </button>
+        <BaseButton variant="slate" @click="viewLogs" class="-ml-2"> LOG </BaseButton>
       </div>
 
       <!-- 第九行 -->
-      <FormInput
+      <BaseSelect
         :modelValue="studentData.status"
-        type="select"
         label="帳號狀態"
         :options="statusOptions"
         @update:modelValue="updateField('status', $event)"
@@ -162,19 +153,10 @@
 
       <!-- 操作按鈕 -->
       <div class="col-span-2 mt-8 flex justify-end gap-4">
-        <button
-          @click="handleCancel"
-          class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer"
-        >
-          取消
-        </button>
-        <button
-          @click="handleSave"
-          :disabled="!canSave || saving"
-          class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-        >
+        <BaseButton variant="cancel" size="lg" @click="handleCancel"> 取消 </BaseButton>
+        <BaseButton variant="primary" size="lg" :disabled="!canSave || saving" @click="handleSave">
           {{ saving ? '儲存中...' : '儲存' }}
-        </button>
+        </BaseButton>
       </div>
     </div>
   </div>
@@ -185,7 +167,9 @@
 </template>
 
 <script setup lang="ts">
-import FormInput from '@/components/common/FormInput.vue'
+import BaseInput from '@/components/common/BaseInput.vue'
+import BaseSelect from '@/components/common/BaseSelect.vue'
+import BaseButton from '@/components/common/BaseButton.vue'
 import { useStudent } from '../composables/useStudent'
 
 const {
@@ -204,4 +188,3 @@ const {
   viewLogs,
 } = useStudent()
 </script>
-
