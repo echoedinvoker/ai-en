@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
-import type { Ref } from 'vue'
-import { studentApi, type StudentSearchParams } from '@/data/mockStudents'
+import { computed, type  Ref } from 'vue'
+import { studentApi, type StudentSearchParams } from '@/data/mockStudentsList'
+import { studentDetailApi } from '@/data/mockStudentDetails'
 
 // 學生列表 Query Hook
 export function useStudentsListQuery(searchParams: Ref<StudentSearchParams>) {
@@ -12,3 +13,13 @@ export function useStudentsListQuery(searchParams: Ref<StudentSearchParams>) {
   })
 }
 
+// 單一學生 Query Hook
+export function useStudentQuery(studentId: Ref<number>) {
+  return useQuery({
+    queryKey: ['student', studentId],
+    queryFn: () => studentDetailApi.getStudent(studentId.value),
+    enabled: computed(() => !!studentId.value),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  })
+}

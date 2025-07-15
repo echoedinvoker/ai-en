@@ -22,7 +22,12 @@ const router = createRouter({
       path: '/account/students',
       name: 'AccountStudents',
       component: () => import('@/views/account/StudentsPage.vue'),
-    }
+    },
+    {
+      path: '/account/students/:id',
+      name: 'AccountStudentEdit',
+      component: () => import('@/views/account/StudentEditPage.vue'),
+    },
   ],
 })
 
