@@ -1,10 +1,10 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- 功能區 -->
-    <div class="bg-white rounded-lg shadow p-6">
+    <Card>
       <!-- 搜尋表單 -->
       <StaffSearchForm />
-    </div>
+    </Card>
 
     <!-- 使用 DataTable 組件 -->
     <DataTable
@@ -50,6 +50,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Edit2 } from 'lucide-vue-next'
+import Card from '@/components/common/Card.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import StaffSearchForm from './components/StaffSearchForm.vue'
 import { useStaffList } from './composables/useStaffList'

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow overflow-hidden">
+  <Card no-padding class="overflow-hidden">
     <!-- Loading 狀態 -->
     <div v-if="loading" class="p-6 text-center">
       <div class="text-gray-500">載入中...</div>
@@ -154,11 +154,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import Card from '@/components/common/Card.vue'
 
 // 定義 Props 介面
 interface Column {

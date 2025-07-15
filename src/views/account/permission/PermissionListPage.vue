@@ -1,10 +1,9 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- 功能區 -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <!-- 搜尋表單 -->
+    <Card>
       <PermissionSearchForm />
-    </div>
+    </Card>
 
     <!-- 使用 DataTable 組件 -->
     <DataTable
@@ -43,6 +42,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Edit2 } from 'lucide-vue-next'
+import Card from '@/components/common/Card.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import PermissionSearchForm from './components/PermissionSearchForm.vue'
 import { usePermissionList } from './composables/usePermissionList'
