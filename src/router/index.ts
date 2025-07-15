@@ -52,6 +52,16 @@ const router = createRouter({
           component: () => import('@/views/account/permission/PermissionEditPage.vue'),
         },
       ]
+    },
+    {
+      path: '/data',
+      children: [
+        {
+          path: 'questions',
+          name: 'DataQuestions',
+          component: () => import('@/views/data/question/QuestionListPage.vue'),
+        }
+      ]
     }
   ],
 })

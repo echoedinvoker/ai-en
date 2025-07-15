@@ -17,10 +17,7 @@
     />
 
     <!-- 空白欄位 -->
-    <div></div>
-
-    <!-- 操作按鈕 -->
-    <div class="flex items-end space-x-2">
+    <div class="self-end">
       <button
         @click="handleSearch"
         :disabled="isFetching"
@@ -29,14 +26,12 @@
       >
         <Search :size="20" />
       </button>
-      <button
-        @click="handleReset"
-        :disabled="isFetching"
-        class="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        title="重置"
-      >
-        <RotateCcw :size="20" />
-      </button>
+    </div>
+
+    <div></div>
+
+    <!-- 操作按鈕 -->
+    <div class="self-end justify-items-end">
       <button
         @click="handleAddPermission"
         class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer"

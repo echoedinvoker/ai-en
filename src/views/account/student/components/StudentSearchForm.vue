@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-4 gap-4 mb-4">
+  <div class="grid grid-cols-5 gap-4 mb-4">
     <!-- 學生 Email -->
     <FormInput
       v-model="searchForm.email"
@@ -25,7 +25,7 @@
     />
 
     <!-- 操作按鈕 -->
-    <div class="flex items-end space-x-2">
+    <div class="self-end">
       <button
         @click="handleSearch"
         :disabled="isFetching"
@@ -34,6 +34,8 @@
       >
         <Search :size="20" />
       </button>
+    </div>
+    <div class="self-end justify-items-end">
       <button
         @click="handleAddStudent"
         class="px-4 py-2 bg-slate-600 text-white border border-slate-600 rounded-md hover:bg-slate-700 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer"
