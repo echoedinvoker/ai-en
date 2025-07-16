@@ -7,7 +7,7 @@
     <div class="text-red-500">錯誤: {{ error.message }}</div>
   </div>
 
-  <div v-else-if="teacherData" class="bg-white rounded-lg shadow p-6">
+  <Card v-else-if="teacherData" class="max-w-screen-xl">
     <div class="grid grid-cols-[2fr_2fr_1fr] gap-6">
       <!-- 第一行 -->
       <BaseInput
@@ -138,13 +138,15 @@
 
       <!-- 操作按鈕 -->
       <div class="col-span-2 mt-8 flex justify-end gap-4">
-        <BaseButton variant="cancel" size="lg" @click="handleCancel"> 取消 </BaseButton>
-        <BaseButton variant="primary" size="lg" :disabled="!canSave || saving" @click="handleSave">
-          {{ saving ? '儲存中...' : '儲存' }}
-        </BaseButton>
+        <!-- 取消按鈕：次要動作，使用較淡的顏色 -->
+        <IconButton @click="handleCancel" :disabled="saving"
+        :icon="X" title="取消" :iconSize="32" variant="secondary" />
+        <!-- 儲存按鈕：主要動作，使用強調色 -->
+        <IconButton @click="handleSave" :disabled="!canSave || saving"
+        :icon="Save" title="儲存" :iconSize="32" variant="primary" />
       </div>
     </div>
-  </div>
+  </Card>
 
   <div v-else class="bg-white rounded-lg shadow p-6">
     <div class="text-gray-500">無教師資料</div>
@@ -156,6 +158,9 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import { useTeacher } from '../composables/useTeacher'
+import Card from '@/components/common/Card.vue'
+import IconButton from '@/components/common/IconButton.vue'
+import { X, Save } from 'lucide-vue-next'
 
 const {
   teacherData,

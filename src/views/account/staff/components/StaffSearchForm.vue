@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-5 gap-4 mb-4">
+  <div class="grid grid-cols-5 gap-4">
     <!-- 員工 Email -->
     <BaseInput
       v-model="searchForm.email"
@@ -35,7 +35,7 @@
 
     <div></div>
 
-    <div class="self-end justify-items-end">
+    <div class="justify-items-start">
       <IconButton
         @click="handleAddStaff"
         :icon="UserPlus"

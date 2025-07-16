@@ -29,7 +29,7 @@
     <div></div>
 
     <!-- 操作按鈕 -->
-    <div class="self-end justify-items-end">
+    <div class="justify-items-start">
       <IconButton
         @click="handleAddPermission"
         :icon="ShieldPlus"

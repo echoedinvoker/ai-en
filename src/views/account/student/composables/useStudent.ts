@@ -35,7 +35,7 @@ export function useStudent(studentId?: string | number) {
     error,
     refetch
   } = useQuery({
-    queryKey: ['student', id.value],
+    queryKey: ['student', id],
     queryFn: () => studentDetailApi.getStudent(id.value),
     enabled: computed(() => id.value > 0),
     select: (data) => {

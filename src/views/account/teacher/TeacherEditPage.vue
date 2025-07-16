@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 space-y-6">
+  <PageContainer>
     <!-- 標題 -->
     <div class="flex items-center justify-end">
       <button @click="goBack" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 cursor-pointer">
@@ -28,13 +28,14 @@
     <div v-if="saveError" class="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
       <p class="text-red-800">儲存失敗: {{ saveError.message }}</p>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
 import { ArrowLeft } from 'lucide-vue-next'
 import TeacherForm from './components/TeacherForm.vue' // 更新 import 路徑
 import { useTeacher } from './composables/useTeacher' // 更新 import 路徑
+import PageContainer from '@/components/common/PageContainer.vue'
 
 // 使用 composable
 const {

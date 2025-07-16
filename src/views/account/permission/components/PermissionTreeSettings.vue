@@ -1,7 +1,5 @@
 <template>
   <div class="mt-8">
-    <h3 class="text-lg font-medium text-gray-900 mb-6">權限設定</h3>
-
     <!-- 載入狀態檢查 -->
     <div v-if="!permissionData" class="text-center py-8">
       <div class="text-gray-500">載入中...</div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 space-y-6">
+  <PageContainer>
     <!-- 功能區 -->
     <Card>
       <PermissionSearchForm />
@@ -36,7 +36,7 @@
         </button>
       </template>
     </DataTable>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -46,6 +46,7 @@ import Card from '@/components/common/Card.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import PermissionSearchForm from './components/PermissionSearchForm.vue'
 import { usePermissionList } from './composables/usePermissionList'
+import PageContainer from '@/components/common/PageContainer.vue'
 
 // 使用 composable
 const {

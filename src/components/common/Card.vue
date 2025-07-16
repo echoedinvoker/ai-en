@@ -28,6 +28,7 @@ const cardClasses = computed(() => {
   const baseClasses = 'bg-white rounded-lg'
   const paddingClass = props.noPadding ? '' : 'p-6'
   const shadowClass = props.shadow === 'none' ? '' : `shadow${props.shadow === 'md' ? '' : `-${props.shadow}`}`
+  const maxWidthClass = 'max-w-xl'
 
   return [
     baseClasses,

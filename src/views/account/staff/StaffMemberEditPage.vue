@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 space-y-6">
+  <PageContainer>
     <!-- 標題 -->
     <div class="flex items-center justify-end">
       <button @click="goBack" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 cursor-pointer">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- 管理人員表單 -->
-    <div v-else-if="staffData" class="bg-white rounded-lg shadow p-6">
+    <Card v-else-if="staffData" class="max-w-screen-xl">
       <div class="grid grid-cols-[2fr_2fr_1fr] gap-6">
         <!-- 第一行: 管理人員email, 管理人員姓名 -->
         <FormInput
@@ -108,24 +108,25 @@
         <div></div>
         <div></div>
 
+        <div></div>
+        <div></div>
+        <div></div>
+
+        <div></div>
+        <div></div>
+        <div></div>
+
         <!-- 操作按鈕 -->
         <div class="col-span-2 mt-8 flex justify-end gap-4">
-          <button
-            @click="handleCancel"
-            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer"
-          >
-            取消
-          </button>
-          <button
-            @click="handleSave"
-            :disabled="!canSave || saving"
-            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-          >
-            {{ saving ? '儲存中...' : '儲存' }}
-          </button>
+        <!-- 取消按鈕：次要動作，使用較淡的顏色 -->
+        <IconButton @click="handleCancel" :disabled="saving"
+        :icon="X" title="取消" :iconSize="32" variant="secondary" />
+        <!-- 儲存按鈕：主要動作，使用強調色 -->
+        <IconButton @click="handleSave" :disabled="!canSave || saving"
+        :icon="Save" title="儲存" :iconSize="32" variant="primary" />
         </div>
       </div>
-    </div>
+    </Card>
 
     <!-- 無資料狀態 -->
     <div v-else class="bg-white rounded-lg shadow p-6">
@@ -136,13 +137,16 @@
     <div v-if="saveError" class="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
       <p class="text-red-800">儲存失敗: {{ saveError.message }}</p>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft } from 'lucide-vue-next'
+import { ArrowLeft, X, Save } from 'lucide-vue-next'
+import IconButton from '@/components/common/IconButton.vue'
 import FormInput from '@/components/common/FormInput.vue'
 import { useStaffMember } from './composables/useStaffMember'
+import PageContainer from '@/components/common/PageContainer.vue'
+import Card from '@/components/common/Card.vue'
 
 // 使用 composable
 const {

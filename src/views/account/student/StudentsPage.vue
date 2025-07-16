@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 space-y-6">
+  <PageContainer>
     <!-- 功能區 -->
     <Card>
       <!-- 搜尋表單 -->
@@ -37,7 +37,7 @@
         </button>
       </template>
     </DataTable>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -47,6 +47,7 @@ import Card from '@/components/common/Card.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import StudentSearchForm from './components/StudentSearchForm.vue'
 import { useStudentsList } from './composables/useStudentsList'
+import PageContainer from '@/components/common/PageContainer.vue'
 
 // 使用 composable
 const {

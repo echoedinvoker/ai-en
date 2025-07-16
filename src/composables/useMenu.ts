@@ -1,9 +1,8 @@
 import { fetchMenuItems } from '@/data/menuData';
 import { useQuery } from '@tanstack/vue-query';
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-// 菜單項目類型定義
 export interface MenuItem {
   key: string;
   label: string;
@@ -14,17 +13,15 @@ export interface MenuItem {
   }>;
 }
 
-// 當前選中的項目狀態
-const activeParentKey = ref('account-management');
-const activeChildKey = ref('teacher-member');
-
-// 展開的菜單項目狀態
-const expandedItems = ref(new Set([activeParentKey.value]));
+// 移除硬編碼的初始值
+const activeParentKey = ref('');
+const activeChildKey = ref('');
+const expandedItems = ref(new Set<string>());
 
 export function useMenu() {
   const router = useRouter();
+  const route = useRoute(); // 獲取當前路由
 
-  // 使用 TanStack Query 獲取菜單資料
   const {
     data: menuItems,
     isLoading,
@@ -35,7 +32,35 @@ export function useMenu() {
     queryFn: fetchMenuItems,
   });
 
-  // 計算當前的 breadcrumb
+  // 根據路由設置當前選中項目
+  const setActiveByRoute = (routePath: string) => {
+    if (!menuItems.value) return;
+
+    for (const parent of menuItems.value) {
+      const child = parent.children.find(item => item.route === routePath);
+      if (child) {
+        activeParentKey.value = parent.key;
+        activeChildKey.value = child.key;
+        expandedItems.value.add(parent.key); // 自動展開對應的父項目
+        return;
+      }
+    }
+  };
+
+  // 監聽菜單資料載入完成後，根據當前路由設定 active 狀態
+  watch(menuItems, (newMenuItems) => {
+    if (newMenuItems && route.path) {
+      setActiveByRoute(route.path);
+    }
+  }, { immediate: true });
+
+  // 監聽路由變化
+  watch(() => route.path, (newPath) => {
+    if (menuItems.value && newPath) {
+      setActiveByRoute(newPath);
+    }
+  });
+
   const currentBreadcrumb = computed(() => {
     if (!menuItems.value) return { parent: '', child: '' };
     const parent = menuItems.value.find(item => item.key === activeParentKey.value);
@@ -46,7 +71,6 @@ export function useMenu() {
     };
   });
 
-  // 計算當前選中項目的完整資訊
   const currentMenuItem = computed(() => {
     if (!menuItems.value) return { parent: null, child: null, route: '' };
     const parent = menuItems.value.find(item => item.key === activeParentKey.value);
@@ -58,7 +82,6 @@ export function useMenu() {
     };
   });
 
-  // 切換菜單項目展開狀態
   const toggleExpanded = (key: string) => {
     if (expandedItems.value.has(key)) {
       expandedItems.value.delete(key);
@@ -67,58 +90,36 @@ export function useMenu() {
     }
   };
 
-  // 選擇子項目
   const selectChild = (parentKey: string, childKey: string) => {
     activeParentKey.value = parentKey;
     activeChildKey.value = childKey;
 
-    // 確保選中項目的父級是展開的
     if (!expandedItems.value.has(parentKey)) {
       expandedItems.value.add(parentKey);
     }
 
-    // 找到對應的子項目並進行導航
     if (!menuItems.value) return;
     const parent = menuItems.value.find(item => item.key === parentKey);
     const child = parent?.children.find(item => item.key === childKey);
 
     if (child?.route) {
-      router.push({ path: child.route }); // 使用 route 屬性進行導航
+      router.push({ path: child.route });
     }
   };
 
-  // 根據路由設置當前選中項目
-  const setActiveByRoute = (route: string) => {
-    if (!menuItems.value) return;
-    for (const parent of menuItems.value) {
-      const child = parent.children.find(item => item.route === route);
-      if (child) {
-        selectChild(parent.key, child.key);
-        break;
-      }
-    }
-  };
-
-  // 檢查項目是否展開
   const isExpanded = (key: string) => expandedItems.value.has(key);
 
-  // 檢查項目是否為當前選中
   const isActive = (parentKey: string, childKey: string) => {
     return activeParentKey.value === parentKey && activeChildKey.value === childKey;
   };
 
   return {
-    // 狀態
     menuItems,
     activeParentKey,
     activeChildKey,
     expandedItems,
-
-    // 計算屬性
     currentBreadcrumb,
     currentMenuItem,
-
-    // 方法
     toggleExpanded,
     selectChild,
     setActiveByRoute,
@@ -126,4 +127,3 @@ export function useMenu() {
     isActive
   };
 }
-

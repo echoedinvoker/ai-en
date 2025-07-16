@@ -48,7 +48,7 @@ const router = createRouter({
         },
         {
           path: 'permissions/:id',
-          name: 'AccountStaffEdit',
+          name: 'AccountPermissionEdit',
           component: () => import('@/views/account/permission/PermissionEditPage.vue'),
         },
       ]
@@ -60,10 +60,51 @@ const router = createRouter({
           path: 'questions',
           name: 'DataQuestions',
           component: () => import('@/views/data/question/QuestionListPage.vue'),
+        },
+        {
+          path: 'questions/create',
+          name: 'DataQuestionCreate',
+          component: () => import('@/views/data/question/QuestionCreatePage.vue'),
+        },
+        {
+          path: 'questions/import',
+          name: 'DataQuestionImport',
+          component: () => import('@/views/data/question/QuestionImportPage.vue'),
+        },
+        {
+          path: 'essays',
+          name: 'DataEssays',
+          component: () => import('@/views/data/essay/EssayListPage.vue'),
+        },
+        {
+          path: 'essays/:id',
+          name: 'DataEssayDetail',
+          component: () => import('@/views/data/essay/EssayDetailPage.vue'),
         }
+      ]
+    },
+    {
+      path: '/backend',
+      children: [
+        {
+          path: 'push',
+          name: 'BackendPush',
+          component: () => import('@/views/backend/push/PushListPage.vue'),
+        },
+        {
+          path: 'push/:id',
+          name: 'BackendPushEdit',
+          component: () => import('@/views/backend/push/PushDetailPage.vue'),
+        },
+        {
+          path: 'push/create',
+          name: 'BackendPushCreate',
+          component: () => import('@/views/backend/push/PushCreatePage.vue'),
+        },
       ]
     }
   ],
 })
 
 export default router
+

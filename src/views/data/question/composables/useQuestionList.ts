@@ -103,7 +103,6 @@ export function useQuestionBankList() {
   }
 
   const handlePageSizeChange = (newPageSize: number) => {
-    console.log('更新分頁大小:', newPageSize)
     pagination.value.pageSize = newPageSize
     pagination.value.currentPage = 1
   }
@@ -128,13 +127,11 @@ export function useQuestionBankList() {
 
   // 題庫操作
   const handleAddQuestionBank = () => {
-    console.log('新增題庫')
-    // TODO: 實作新增題庫邏輯
+    router.push('/data/questions/create')
   }
 
   const handleImportQuestionBank = () => {
-    console.log('匯入題庫')
-    // TODO: 實作匯入題庫邏輯
+    router.push('/data/questions/import')
   }
 
   const handleEdit = (questionBank: QuestionBankItem) => {

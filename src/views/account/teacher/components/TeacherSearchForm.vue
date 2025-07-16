@@ -35,7 +35,7 @@
 
     <div></div>
 
-    <div class="self-end justify-items-end">
+    <div class="justify-items-start">
       <IconButton
         @click="handleAddTeacher"
         :icon="UserPlus"
