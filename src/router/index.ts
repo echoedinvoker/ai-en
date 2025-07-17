@@ -32,6 +32,11 @@ const router = createRouter({
           component: () => import('@/views/account/student/StudentEditPage.vue'),
         },
         {
+          path: 'students/create',
+          name: 'AccountStudentsCreate',
+          component: () => import('@/views/account/student/StudentCreatePage.vue'),
+        },
+        {
           path: 'staff',
           name: 'AccountStaff',
           component: () => import('@/views/account/staff/StaffListPage.vue'),
@@ -42,6 +47,11 @@ const router = createRouter({
           component: () => import('@/views/account/staff/StaffMemberEditPage.vue'),
         },
         {
+          path: 'staff/create',
+          name: 'AccountStaffCreate',
+          component: () => import('@/views/account/staff/StaffCreatePage.vue'),
+        },
+        {
           path: 'permissions',
           name: 'AccountPermissions',
           component: () => import('@/views/account/permission/PermissionListPage.vue'),
@@ -50,6 +60,11 @@ const router = createRouter({
           path: 'permissions/:id',
           name: 'AccountPermissionEdit',
           component: () => import('@/views/account/permission/PermissionEditPage.vue'),
+        },
+        {
+          path: 'permissions/create',
+          name: 'AccountPermissionCreate',
+          component: () => import('@/views/account/permission/PermissionCreatePage.vue'),
         },
       ]
     },
@@ -122,9 +137,29 @@ const router = createRouter({
           component: () => import('@/views/backend/subscription/SubListPage.vue'),
         },
         {
+          path: 'sub/:id',
+          name: 'SubscriptionDetail',
+          component: () => import('@/views/backend/subscription/SubDetailPage.vue'),
+        },
+        {
           path: 'sub/create',
           name: 'SubscriptionCreate',
           component: () => import('@/views/backend/subscription/SubCreatePage.vue'),
+        },
+      ]
+    },
+    {
+      path: '/platform',
+      children: [
+        {
+          path: 'dashboard',
+          name: 'PlatformDashboard',
+          component: () => import('@/views/platform/DashboardPage.vue'),
+        },
+        {
+          path: 'feedback',
+          name: 'PlatformFeedback',
+          component: () => import('@/views/platform/FeedbackPage.vue'),
         },
       ]
     }

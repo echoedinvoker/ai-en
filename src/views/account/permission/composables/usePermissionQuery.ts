@@ -8,6 +8,10 @@ export function usePermissionListQuery(searchParams: Ref<PermissionSearchParams>
   return useQuery({
     queryKey: ['permission-list', searchParams],
     queryFn: () => permissionApi.getPermissionList(searchParams.value),
+    select: (data) => {
+      console.log('Fetching permission list with params:', searchParams.value, data)
+      return data
+    },
     staleTime: 5 * 60 * 1000, // 5分鐘內資料視為新鮮
     gcTime: 10 * 60 * 1000, // 10分鐘後清除快取
   })

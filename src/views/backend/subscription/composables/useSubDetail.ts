@@ -1,11 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useSubDetailQuery, useUpdateSubMutation } from "./useSubQUery";
 
 export function useSubDetail(subId?: number) {
   const route = useRoute();
-  const queryClient = useQueryClient();
 
   // 計算訂閱方案ID，優先使用傳入參數，否則從路由參數取得
   const id = computed(() => {

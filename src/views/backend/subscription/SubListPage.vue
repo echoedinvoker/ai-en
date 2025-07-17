@@ -93,6 +93,6 @@ const getStatusText = (status: string) => {
 }
 
 const handleEdit = (item: SubItem) => {
-  router.push(`/backend/push/${item.id}`)
+  router.push(`/backend/sub/${item.id}`)
 }
 </script>

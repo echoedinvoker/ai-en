@@ -51,14 +51,20 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
 import { useStudentsList } from '../composables/useStudentsList'
 import IconButton from '@/components/common/IconButton.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // 使用 composable 獲取搜尋相關功能
 const {
   searchForm,
   isFetching,
   handleSearch,
-  handleAddStudent,
 } = useStudentsList()
+
+const handleAddStudent = () => {
+  router.push('/account/students/create')
+}
 
 // 狀態選項配置
 const statusOptions = [

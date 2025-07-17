@@ -80,11 +80,6 @@ export function useStaffList() {
     dataTable.pagination.value.currentPage = 1
   }
 
-  // 員工操作
-  const handleAddStaff = () => {
-    console.log('新增員工')
-  }
-
   const handleEdit = (staffMember: StaffListItem) => {
     router.push(`/account/staff/${staffMember.id}`)
   }
@@ -164,7 +159,6 @@ export function useStaffList() {
     // 方法
     handleSearch,
     handleReset,
-    handleAddStaff,
     handleEdit,
     getStatusClass,
     getStatusText,

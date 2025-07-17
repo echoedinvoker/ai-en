@@ -51,13 +51,15 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
 import IconButton from '@/components/common/IconButton.vue'
 import { useStaffList } from '../composables/useStaffList'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // 使用 composable 獲取搜尋相關功能
 const {
   searchForm,
   isFetching,
   handleSearch,
-  handleAddStaff,
 } = useStaffList()
 
 // 狀態選項配置
@@ -67,5 +69,10 @@ const statusOptions = [
   { value: 'suspended', label: '停權中' },
   { value: 'reserved', label: '保留' }
 ]
+
+const handleAddStaff = () => {
+  // 導向到新增員工頁面
+  router.push('/account/staff/create')
+}
 </script>
 

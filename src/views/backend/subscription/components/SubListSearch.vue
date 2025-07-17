@@ -21,7 +21,7 @@
         </div>
         <div class="justify-self-start">
           <IconButton
-            @click="() => router.push({ name: 'SubscriptionCreate' })"
+            @click="handleCreate"
             :icon="TicketPlus"
             title="新增訂閱項目"
           />
@@ -52,4 +52,8 @@ const statusOptions = [
   { label: '啟用', value: 'enabled' },
   { label: '停用', value: 'disabled' }
 ]
+
+const handleCreate = () => {
+  router.push(`/backend/sub/create`);
+}
 </script>

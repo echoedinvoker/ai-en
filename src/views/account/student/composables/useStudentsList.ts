@@ -77,11 +77,6 @@ export function useStudentsList() {
     dataTable.pagination.value.currentPage = 1
   }
 
-  // 學生操作
-  const handleAddStudent = () => {
-    console.log('新增學生')
-  }
-
   const handleEdit = (student: StudentListItem) => {
     router.push(`/account/students/${student.id}`)
   }
@@ -130,7 +125,6 @@ export function useStudentsList() {
     // 方法
     handleSearch,
     handleReset,
-    handleAddStudent,
     handleEdit,
     getStatusClass,
     getStatusText,

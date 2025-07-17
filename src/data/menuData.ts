@@ -5,7 +5,7 @@ export const mockMenuItems: MenuItem[] = [
     key: 'account-management',
     label: '會員帳號管理',
     children: [
-      { key: 'teacher-member', label: '教師會員', route: '/account/teachers' },
+      // { key: 'teacher-member', label: '教師會員', route: '/account/teachers' },
       { key: 'student-member', label: '學生會員', route: '/account/students' },
       { key: 'staff-member', label: '管理人員', route: '/account/staff' },
       { key: 'group-permission', label: '群組權限', route: '/account/permissions' }
@@ -16,8 +16,8 @@ export const mockMenuItems: MenuItem[] = [
     label: '資料管理',
     children: [
       { key: 'question-bank', label: '題庫管理', route: '/data/questions' },
-      { key: 'class-management', label: '班級管理', route: '/data/classes' },
-      { key: 'exam-management', label: '試題管理', route: '/data/exams' },
+      // { key: 'class-management', label: '班級管理', route: '/data/classes' },
+      // { key: 'exam-management', label: '試題管理', route: '/data/exams' },
       { key: 'essay-management', label: '作文管理', route: '/data/essays' }
     ]
   },

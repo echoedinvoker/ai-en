@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { usePermissionListQuery } from './usePermissionQuery'
 import type { PermissionListResponse, PermissionListItem, PermissionSearchParams } from '../data/mockPermissionList'
 import { useDataTable } from '@/composables/useDataTable'
+import { watch } from 'vue'
 
 export interface SearchForm {
   role: string
@@ -43,6 +44,12 @@ export function usePermissionList() {
     refetch,
     isFetching,
   } = usePermissionListQuery(queryParams)
+
+  watch(queryResult, (newData) => {
+    if (newData) {
+      data.value = newData
+    }
+  }, { immediate: true })
 
   // 從 Query 結果中提取資料
   const permissions = computed(() => data.value?.data || [])
