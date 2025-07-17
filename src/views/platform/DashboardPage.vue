@@ -198,7 +198,7 @@ const createLineChart = () => {
   // 添加軸
   g.append('g')
     .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b')))
+    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b') as any))
 
   g.append('g')
     .call(d3.axisLeft(yScale))
@@ -257,7 +257,7 @@ const createBarChart = () => {
     .call(d3.axisBottom(xScale))
 
   g.append('g')
-    .call(d3.axisLeft(yScale).tickFormat(d => `$${d / 1000}k`))
+    .call(d3.axisLeft(yScale).tickFormat(d => `$${(d as any) / 1000}k`))
 
   // 添加長條
   g.selectAll('.bar')
