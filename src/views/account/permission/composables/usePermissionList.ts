@@ -70,11 +70,6 @@ export function usePermissionList() {
     dataTable.pagination.value.currentPage = 1
   }
 
-  // 權限群組操作
-  const handleAddPermission = () => {
-    console.log('新增權限群組')
-  }
-
   const handleEdit = (permission: PermissionListItem) => {
     router.push(`/account/permissions/${permission.id}`)
   }
@@ -123,7 +118,6 @@ export function usePermissionList() {
     // 方法
     handleSearch,
     handleReset,
-    handleAddPermission,
     handleEdit,
     getStatusClass,
     getStatusText,

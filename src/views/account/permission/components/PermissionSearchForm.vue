@@ -45,13 +45,15 @@ import IconButton from '@/components/common/IconButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
 import { usePermissionList } from '../composables/usePermissionList'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // 使用 composable 獲取搜尋相關功能
 const {
   searchForm,
   isFetching,
   handleSearch,
-  handleAddPermission,
 } = usePermissionList()
 
 // 狀態選項配置
@@ -61,5 +63,9 @@ const statusOptions = [
   { value: 'suspended', label: '停權中' },
   { value: 'reserved', label: '保留' }
 ]
+
+const handleAddPermission = () => {
+  router.push(`/account/permissions/create`)
+}
 </script>
 

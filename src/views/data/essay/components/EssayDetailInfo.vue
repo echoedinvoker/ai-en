@@ -1,7 +1,7 @@
 <template>
     <!-- 作文詳細資訊卡片 -->
     <Card class="max-w-screen-xl">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-3 gap-4">
         <BaseInput
           :model-value="essayDetail?.id"
           type="text"
@@ -16,6 +16,7 @@
           placeholder="輸入作文名稱"
           disabled
         />
+        <div></div>
 
         <BaseInput
           :model-value="essayDetail?.author"
@@ -31,6 +32,7 @@
           placeholder="輸入試題擁有者"
           disabled
         />
+        <div></div>
 
         <BaseInput
           :model-value="essayDetail?.aiScore"
