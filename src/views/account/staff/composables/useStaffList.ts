@@ -60,7 +60,7 @@ export function useStaffList() {
   }, { immediate: true })
 
   // 從 Query 結果中提取資料
-  const staff = computed(() => queryResult.value?.data || [])
+  const staff = computed(() => data.value?.data || [])
 
   // 搜尋操作
   const handleSearch = () => {

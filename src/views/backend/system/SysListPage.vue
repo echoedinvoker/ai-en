@@ -5,10 +5,11 @@
     <DataTable
       :columns="tableColumns"
       :data="systems"
+      :loading="isFetching && systems.length === 0"
+      :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
       :total-records="totalRecords"
-      :loading="isLoading || isFetching"
       record-name="公告"
       empty-text="沒有符合條件的公告資料"
       @page-change="goToPage"

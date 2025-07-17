@@ -10,7 +10,7 @@
     <DataTable
       :data="teachers"
       :columns="tableColumns"
-      :loading="isLoading"
+      :loading="isFetching && teachers.length === 0"
       :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"

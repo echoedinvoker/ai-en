@@ -10,7 +10,7 @@
     <DataTable
       :data="students"
       :columns="tableColumns"
-      :loading="isLoading"
+      :loading="isFetching && students.length === 0"
       :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
@@ -54,7 +54,6 @@ const {
   pagination,
   students,
   totalRecords,
-  isLoading,
   isFetching,
   handleEdit,
   goToPage,

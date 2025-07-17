@@ -49,7 +49,7 @@ export function useSysList() {
   }, { immediate: true });
 
   // 計算屬性
-  const systems = computed(() => queryResult.value?.data || []);
+  const systems = computed(() => data.value?.data || []);
 
   // 搜尋操作
   const handleSearch = () => {

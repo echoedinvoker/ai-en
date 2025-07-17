@@ -45,7 +45,7 @@ export function usePermissionList() {
   } = usePermissionListQuery(queryParams)
 
   // 從 Query 結果中提取資料
-  const permissions = computed(() => queryResult.value?.data || [])
+  const permissions = computed(() => data.value?.data || [])
 
   // 搜尋操作
   const handleSearch = () => {

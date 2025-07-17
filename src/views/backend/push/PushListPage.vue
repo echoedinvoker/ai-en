@@ -47,10 +47,11 @@
     <DataTable
       :columns="tableColumns"
       :data="pushes"
+      :loading="isFetching && pushes.length === 0"
+      :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
       :total-records="totalRecords"
-      :loading="isLoading || isFetching"
       record-name="推播"
       empty-text="沒有符合條件的推播資料"
       @page-change="goToPage"

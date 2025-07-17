@@ -43,6 +43,7 @@ export function useStudentsList() {
   const {
     data: queryResult,
     isLoading,
+    isPending,
     isError,
     error,
     refetch,
@@ -57,7 +58,7 @@ export function useStudentsList() {
   }, { immediate: true })
 
   // 從 Query 結果中提取資料
-  const students = computed(() => queryResult.value?.data || [])
+  const students = computed(() => data.value?.data || [])
 
   // 搜尋操作
   const handleSearch = () => {
@@ -124,6 +125,7 @@ export function useStudentsList() {
     isError,
     error,
     isFetching,
+    isPending,
 
     // 方法
     handleSearch,

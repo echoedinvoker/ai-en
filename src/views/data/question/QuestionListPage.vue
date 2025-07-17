@@ -10,7 +10,7 @@
     <DataTable
       :data="questionBanks"
       :columns="tableColumns"
-      :loading="isLoading"
+      :loading="isFetching && questionBanks.length === 0"
       :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"

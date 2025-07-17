@@ -10,7 +10,7 @@
     <DataTable
       :data="staff"
       :columns="tableColumns"
-      :loading="isLoading"
+      :loading="isFetching && staff.length === 0"
       :fetching="isFetching"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"

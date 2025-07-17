@@ -49,7 +49,7 @@ export function usePushList() {
   }, { immediate: true });
 
   // 計算屬性
-  const pushes = computed(() => queryResult.value?.data || []);
+  const pushes = computed(() => data.value?.data || []);
 
 
   // 搜尋操作

@@ -51,7 +51,7 @@ export function useEssayList() {
     }
   }, { immediate: true });
 
-  const essays = computed(() => queryResult.value?.data || []);
+  const essays = computed(() => data.value?.data || []);
 
   // 搜尋操作
   const handleSearch = () => {

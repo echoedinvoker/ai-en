@@ -60,7 +60,7 @@ export function useQuestionBankList() {
   }, { immediate: true })
 
   // 從 Query 結果中提取資料
-  const questionBanks = computed(() => queryResult.value?.data || [])
+  const questionBanks = computed(() => data.value?.data || [])
 
   // 搜尋操作
   const handleSearch = () => {
