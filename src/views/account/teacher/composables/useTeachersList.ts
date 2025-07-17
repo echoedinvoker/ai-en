@@ -1,7 +1,8 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTeachersListQuery } from './useTeachersQuery'
-import type { TeacherListItem, TeacherSearchParams } from '../data/mockTeachersList'
+import { useDataTable } from '@/composables/useDataTable'
+import type { TeacherListResponse, TeacherListItem, TeacherSearchParams } from '../data/mockTeachersList'
 
 export interface SearchForm {
   email: string
@@ -9,10 +10,7 @@ export interface SearchForm {
   status: string
 }
 
-export interface Pagination {
-  currentPage: number
-  pageSize: number
-}
+const data = ref<TeacherListResponse | null>(null)
 
 // 模塊級別的狀態（單例模式）
 const searchForm = ref<SearchForm>({
@@ -27,21 +25,17 @@ const activeSearchForm = ref<SearchForm>({
   status: 'ALL',
 })
 
-const pagination = ref<Pagination>({
-  currentPage: 1,
-  pageSize: 10,
-})
-
 export function useTeachersList() {
   const router = useRouter()
+  const dataTable = useDataTable(data)
 
   // 構建查詢參數
   const queryParams = computed<TeacherSearchParams>(() => ({
     email: activeSearchForm.value.email || undefined,
     name: activeSearchForm.value.name || undefined,
     status: activeSearchForm.value.status === 'ALL' ? undefined : activeSearchForm.value.status,
-    page: pagination.value.currentPage,
-    pageSize: pagination.value.pageSize,
+    page: dataTable.pagination.value.currentPage,
+    pageSize: dataTable.pagination.value.pageSize,
   }))
 
   // 使用 Query 獲取資料
@@ -54,60 +48,19 @@ export function useTeachersList() {
     isFetching,
   } = useTeachersListQuery(queryParams)
 
+  watch(queryResult, (newData) => {
+    if (newData) {
+      data.value = newData
+    }
+  }, { immediate: true })
+
   // 從 Query 結果中提取資料
-  const teachers = computed(() => queryResult.value?.data || [])
-  const totalRecords = computed(() => queryResult.value?.total || 0)
-  const totalPages = computed(() => Math.ceil(totalRecords.value / pagination.value.pageSize))
-
-  const startRecord = computed(() => {
-    if (totalRecords.value === 0) return 0
-    return (pagination.value.currentPage - 1) * pagination.value.pageSize + 1
-  })
-
-  const endRecord = computed(() => {
-    const end = pagination.value.currentPage * pagination.value.pageSize
-    return Math.min(end, totalRecords.value)
-  })
-
-  // 分頁按鈕計算
-  const visiblePages = computed(() => {
-    const current = pagination.value.currentPage
-    const total = totalPages.value
-    const pages: number[] = []
-
-    if (total <= 5) {
-      for (let i = 1; i <= total; i++) {
-        pages.push(i)
-      }
-    } else {
-      const start = Math.max(1, current - 2)
-      const end = Math.min(total, current + 2)
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i)
-      }
-    }
-
-    return pages
-  })
-
-  // 分頁操作
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages.value && page !== pagination.value.currentPage) {
-      pagination.value.currentPage = page
-    }
-  }
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    console.log('更新分頁大小:', newPageSize)
-    pagination.value.pageSize = newPageSize
-    pagination.value.currentPage = 1
-  }
+  const teachers = computed(() => data.value?.data || [])
 
   // 搜尋操作
   const handleSearch = () => {
     activeSearchForm.value = { ...searchForm.value }
-    pagination.value.currentPage = 1
+    dataTable.pagination.value.currentPage = 1
   }
 
   // 重置搜尋
@@ -118,7 +71,7 @@ export function useTeachersList() {
       status: 'ALL',
     }
     activeSearchForm.value = { ...searchForm.value }
-    pagination.value.currentPage = 1
+    dataTable.pagination.value.currentPage = 1
   }
 
   // 教師操作
@@ -158,18 +111,14 @@ export function useTeachersList() {
   }
 
   return {
+    ...dataTable,
+
     // 狀態（現在是共享的）
     searchForm,
     activeSearchForm,
-    pagination,
 
     // Query 狀態
     teachers,
-    totalRecords,
-    totalPages,
-    startRecord,
-    endRecord,
-    visiblePages,
     isLoading,
     isError,
     error,
@@ -180,8 +129,6 @@ export function useTeachersList() {
     handleReset,
     handleAddTeacher,
     handleEdit,
-    goToPage,
-    handlePageSizeChange,
     getStatusClass,
     getStatusText,
     refetch,

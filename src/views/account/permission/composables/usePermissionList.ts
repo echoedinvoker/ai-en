@@ -1,17 +1,15 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePermissionListQuery } from './usePermissionQuery'
-import type { PermissionListItem, PermissionSearchParams } from '../data/mockPermissionList'
+import type { PermissionListResponse, PermissionListItem, PermissionSearchParams } from '../data/mockPermissionList'
+import { useDataTable } from '@/composables/useDataTable'
 
 export interface SearchForm {
   role: string
   status: string
 }
 
-export interface Pagination {
-  currentPage: number
-  pageSize: number
-}
+const data = ref<PermissionListResponse | null>(null)
 
 // 模塊級別的狀態（單例模式）
 const searchForm = ref<SearchForm>({
@@ -24,20 +22,16 @@ const activeSearchForm = ref<SearchForm>({
   status: 'ALL',
 })
 
-const pagination = ref<Pagination>({
-  currentPage: 1,
-  pageSize: 10,
-})
-
 export function usePermissionList() {
   const router = useRouter()
+  const dataTable = useDataTable(data)
 
   // 構建查詢參數
   const queryParams = computed<PermissionSearchParams>(() => ({
     role: activeSearchForm.value.role || undefined,
     status: activeSearchForm.value.status === 'ALL' ? undefined : activeSearchForm.value.status,
-    page: pagination.value.currentPage,
-    pageSize: pagination.value.pageSize,
+    page: dataTable.pagination.value.currentPage,
+    pageSize: dataTable.pagination.value.pageSize,
   }))
 
   // 使用 Query 獲取資料
@@ -52,58 +46,11 @@ export function usePermissionList() {
 
   // 從 Query 結果中提取資料
   const permissions = computed(() => queryResult.value?.data || [])
-  const totalRecords = computed(() => queryResult.value?.total || 0)
-  const totalPages = computed(() => Math.ceil(totalRecords.value / pagination.value.pageSize))
-
-  const startRecord = computed(() => {
-    if (totalRecords.value === 0) return 0
-    return (pagination.value.currentPage - 1) * pagination.value.pageSize + 1
-  })
-
-  const endRecord = computed(() => {
-    const end = pagination.value.currentPage * pagination.value.pageSize
-    return Math.min(end, totalRecords.value)
-  })
-
-  // 分頁按鈕計算
-  const visiblePages = computed(() => {
-    const current = pagination.value.currentPage
-    const total = totalPages.value
-    const pages: number[] = []
-
-    if (total <= 5) {
-      for (let i = 1; i <= total; i++) {
-        pages.push(i)
-      }
-    } else {
-      const start = Math.max(1, current - 2)
-      const end = Math.min(total, current + 2)
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i)
-      }
-    }
-
-    return pages
-  })
-
-  // 分頁操作
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages.value && page !== pagination.value.currentPage) {
-      pagination.value.currentPage = page
-    }
-  }
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    console.log('更新分頁大小:', newPageSize)
-    pagination.value.pageSize = newPageSize
-    pagination.value.currentPage = 1
-  }
 
   // 搜尋操作
   const handleSearch = () => {
     activeSearchForm.value = { ...searchForm.value }
-    pagination.value.currentPage = 1
+    dataTable.pagination.value.currentPage = 1
   }
 
   // 重置搜尋
@@ -113,7 +60,7 @@ export function usePermissionList() {
       status: 'ALL',
     }
     activeSearchForm.value = { ...searchForm.value }
-    pagination.value.currentPage = 1
+    dataTable.pagination.value.currentPage = 1
   }
 
   // 權限群組操作
@@ -153,18 +100,14 @@ export function usePermissionList() {
   }
 
   return {
+    ...dataTable,
+
     // 狀態（現在是共享的）
     searchForm,
     activeSearchForm,
-    pagination,
 
     // Query 狀態
     permissions,
-    totalRecords,
-    totalPages,
-    startRecord,
-    endRecord,
-    visiblePages,
     isLoading,
     isError,
     error,
@@ -175,8 +118,6 @@ export function usePermissionList() {
     handleReset,
     handleAddPermission,
     handleEdit,
-    goToPage,
-    handlePageSizeChange,
     getStatusClass,
     getStatusText,
     refetch,

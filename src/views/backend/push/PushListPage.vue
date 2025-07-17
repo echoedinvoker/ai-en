@@ -47,7 +47,8 @@
     <DataTable
       :columns="tableColumns"
       :data="pushes"
-      :pagination="pagination"
+      :current-page="pagination.currentPage"
+      :page-size="pagination.pageSize"
       :total-records="totalRecords"
       :loading="isLoading || isFetching"
       record-name="推播"

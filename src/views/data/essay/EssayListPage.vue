@@ -5,11 +5,13 @@
     </Card>
 
     <DataTable
-      :columns="tableColumns"
       :data="essays"
-      :pagination="pagination"
+      :columns="tableColumns"
+      :loading="isLoading"
+      :fetching="isFetching"
+      :current-page="pagination.currentPage"
+      :page-size="pagination.pageSize"
       :total-records="totalRecords"
-      :loading="isLoading || isFetching"
       record-name="題庫"
       empty-text="沒有符合條件的題庫資料"
       @page-change="goToPage"
@@ -27,7 +29,6 @@
       </template>
     </DataTable>
   </PageContainer>
-
 </template>
 
 <script setup lang="ts">
