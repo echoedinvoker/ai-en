@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-screen-xl">
     <h3 class="text-lg font-semibold mb-4">寫作回饋</h3>
-    <Card class="p-6">
+    <Card class="p-6" v-if="essayDetail">
       <!-- 整體進度圓形圖 -->
       <div class="flex justify-center mb-8">
         <CircleProgressBar :progress="essayDetail.writingFeedback.progress" />
@@ -13,19 +13,22 @@
         <div class="border-b pb-4">
           <h4 class="text-md font-semibold mb-3 text-blue-600">字彙 (Vocabulary)</h4>
           <div class="mb-3">
-            <LineProgressBar
-              :score="essayDetail.writingFeedback.vocabulary.score"
-              color="blue"
-            />
+            <LineProgressBar :score="essayDetail.writingFeedback.vocabulary.score" color="blue" />
           </div>
           <div class="grid grid-cols-3 gap-4 mb-3">
             <div>
               <span class="text-sm text-gray-600">字彙/字數</span>
-              <div class="font-semibold">{{ essayDetail.writingFeedback.vocabulary.numVocabulary }}/{{ essayDetail.writingFeedback.vocabulary.wordCount }}</div>
+              <div class="font-semibold">
+                {{ essayDetail.writingFeedback.vocabulary.numVocabulary }}/{{
+                  essayDetail.writingFeedback.vocabulary.wordCount
+                }}
+              </div>
             </div>
             <div>
               <span class="text-sm text-gray-600">拼字錯誤</span>
-              <div class="font-semibold">{{ essayDetail.writingFeedback.vocabulary.spellingErrors }}</div>
+              <div class="font-semibold">
+                {{ essayDetail.writingFeedback.vocabulary.spellingErrors }}
+              </div>
             </div>
             <div>
               <span class="text-sm text-gray-600">字彙等級</span>
@@ -44,10 +47,7 @@
         <div class="border-b pb-4">
           <h4 class="text-md font-semibold mb-3 text-green-600">文法 (Grammar)</h4>
           <div class="mb-3">
-            <LineProgressBar
-              :score="essayDetail.writingFeedback.grammar.score"
-              color="green"
-            />
+            <LineProgressBar :score="essayDetail.writingFeedback.grammar.score" color="green" />
           </div>
           <div class="grid grid-cols-3 gap-4 mb-3">
             <div>
@@ -82,10 +82,7 @@
         <div class="border-b pb-4">
           <h4 class="text-md font-semibold mb-3 text-purple-600">內容 (Content)</h4>
           <div class="mb-3">
-            <LineProgressBar
-              :score="essayDetail.writingFeedback.content.score"
-              color="purple"
-            />
+            <LineProgressBar :score="essayDetail.writingFeedback.content.score" color="purple" />
           </div>
           <p class="text-sm text-gray-700">{{ essayDetail.writingFeedback.content.summary }}</p>
         </div>
@@ -99,7 +96,9 @@
               color="orange"
             />
           </div>
-          <p class="text-sm text-gray-700">{{ essayDetail.writingFeedback.organization.summary }}</p>
+          <p class="text-sm text-gray-700">
+            {{ essayDetail.writingFeedback.organization.summary }}
+          </p>
         </div>
       </div>
     </Card>
@@ -114,4 +113,3 @@ import { useEssayDetail } from '../composables/useEssayDetail'
 
 const { essayDetail } = useEssayDetail()
 </script>
-

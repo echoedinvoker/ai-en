@@ -4,6 +4,7 @@
       <h3 class="text-lg font-semibold mb-4">文法改錯建議</h3>
       <div class="space-y-4">
         <Card
+          v-if="essayDetail"
           v-for="(suggestion, index) in essayDetail.suggestions"
           :key="index"
           class="p-4"
@@ -35,7 +36,7 @@
         </Card>
 
         <!-- 無建議時的提示 -->
-        <div v-if="essayDetail.suggestions.length === 0" class="text-center py-8 text-gray-500">
+        <div v-if="essayDetail?.suggestions.length === 0" class="text-center py-8 text-gray-500">
           目前沒有文法改錯建議
         </div>
       </div>

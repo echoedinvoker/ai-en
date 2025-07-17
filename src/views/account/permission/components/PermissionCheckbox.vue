@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       :checked="checked"
-      @change="$emit('update', $event.target.checked)"
+      @change="$emit('update', ($event.target as HTMLInputElement)?.checked)"
       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
     />
     <span class="text-xs text-gray-600 font-mono">{{ label }}</span>

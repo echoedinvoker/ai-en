@@ -184,7 +184,10 @@ export function usePermission(permissionId?: string | number) {
   })
 
   // 更新欄位值的輔助函數
-  const updateField = (field: keyof PermissionForm, value: string | RolePermissions) => {
+  const updateField = (field: keyof PermissionForm, value: string | number | RolePermissions) => {
+    if (typeof value === 'number') {
+      value = (value as number).toString()
+    }
     if (permissionData.value) {
       const updatedData = { ...permissionData.value, [field]: value }
       queryClient.setQueryData(['permission-detail', id.value], updatedData)

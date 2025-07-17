@@ -6,7 +6,7 @@
         <input
           type="checkbox"
           :checked="permissions.view"
-          @change="$emit('update', 'view', $event.target.checked)"
+          @change="$emit('update', 'view',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">查詢</span>
@@ -15,7 +15,7 @@
         <input
           type="checkbox"
           :checked="permissions.add"
-          @change="$emit('update', 'add', $event.target.checked)"
+          @change="$emit('update', 'add',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">新增</span>
@@ -24,7 +24,7 @@
         <input
           type="checkbox"
           :checked="permissions.edit"
-          @change="$emit('update', 'edit', $event.target.checked)"
+          @change="$emit('update', 'edit',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">編輯</span>
@@ -33,7 +33,7 @@
         <input
           type="checkbox"
           :checked="permissions.delete"
-          @change="$emit('update', 'delete', $event.target.checked)"
+          @change="$emit('update', 'delete',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">刪除</span>
@@ -42,7 +42,7 @@
         <input
           type="checkbox"
           :checked="permissions.content"
-          @change="$emit('update', 'content', $event.target.checked)"
+          @change="$emit('update', 'content',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">內容</span>
@@ -51,7 +51,7 @@
         <input
           type="checkbox"
           :checked="permissions.import"
-          @change="$emit('update', 'import', $event.target.checked)"
+          @change="$emit('update', 'import',($event.target as HTMLInputElement)?.checked)"
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span class="text-sm text-gray-600">匯入</span>

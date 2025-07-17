@@ -96,7 +96,7 @@
             <label class="text-sm text-gray-700">每頁顯示：</label>
             <select
               :value="pageSize"
-              @change="$emit('page-size-change', Number($event.target.value))"
+              @change="$emit('page-size-change', Number(($event.target as HTMLSelectElement)?.value))"
               class="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option v-for="size in pageSizeOptions" :key="size" :value="size">

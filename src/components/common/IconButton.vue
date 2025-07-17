@@ -5,7 +5,7 @@
     :title="title"
     :class="[
       'px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
-      variants[variant] ?? variants.default
+      variants[variant as keyof typeof variants] ?? variants.default
     ]"
   >
     <component :is="icon" :size="iconSize" />
