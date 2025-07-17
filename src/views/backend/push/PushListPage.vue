@@ -36,7 +36,7 @@
         <div class="justify-self-start">
           <IconButton
             @click="handleAddPush"
-            :icon="MessageCirclePlus"
+            :icon="BellPlus"
             title="新增推播"
           />
         </div>
@@ -109,7 +109,7 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
 import IconButton from '@/components/common/IconButton.vue'
 import { usePushList } from './composables/usePushList'
-import { Search, Edit2, MessageCirclePlus } from 'lucide-vue-next'
+import { Search, Edit2, BellPlus } from 'lucide-vue-next'
 import type { PushItem } from './data/mockPushList'
 import { useRouter } from 'vue-router'
 import { formatTime } from '@/utils/dateTime'

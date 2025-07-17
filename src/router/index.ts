@@ -106,6 +106,26 @@ const router = createRouter({
           name: 'BackendSys',
           component: () => import('@/views/backend/system/SysListPage.vue'),
         },
+        {
+          path: 'sys/:id',
+          name: 'BackendSysEdit',
+          component: () => import('@/views/backend/system/SysDetailPage.vue'),
+        },
+        {
+          path: 'sys/create',
+          name: 'BackendSysCreate',
+          component: () => import('@/views/backend/system/SysCreatePage.vue'),
+        },
+        {
+          path: 'sub',
+          name: 'SubscriptionList',
+          component: () => import('@/views/backend/subscription/SubListPage.vue'),
+        },
+        {
+          path: 'sub/create',
+          name: 'SubscriptionCreate',
+          component: () => import('@/views/backend/subscription/SubCreatePage.vue'),
+        },
       ]
     }
   ],

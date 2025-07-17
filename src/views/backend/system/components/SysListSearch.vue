@@ -8,7 +8,7 @@
         <IconButton @click="handleSearch" :icon="Search" title="搜尋" />
       </div>
       <div class="justify-self-start">
-        <IconButton @click="handleAddPush" :icon="MessageCirclePlus" title="新增系統公告" />
+        <IconButton @click="handleCreate" :icon="Megaphone" title="新增系統公告" />
       </div>
     </div>
   </Card>
@@ -19,7 +19,7 @@ import Card from '@/components/common/Card.vue';
 import BaseInput from '@/components/common/BaseInput.vue';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import IconButton from '@/components/common/IconButton.vue';
-import { MessageCirclePlus, Search } from 'lucide-vue-next';
+import { Search, Megaphone } from 'lucide-vue-next';
 import { useSysList } from '../composables/useSysList';
 import { useRouter } from 'vue-router';
 
@@ -31,7 +31,7 @@ const {
 } = useSysList()
 
 
-const handleAddPush = () => {
+const handleCreate = () => {
   router.push(`/backend/sys/create`)
 }
 
