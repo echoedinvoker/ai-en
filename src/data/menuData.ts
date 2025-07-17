@@ -26,7 +26,7 @@ export const mockMenuItems: MenuItem[] = [
     label: '後台設定',
     children: [
       { key: 'push-notification', label: '推播訊息', route: '/backend/push' },
-      { key: 'system-announcement', label: '系統公告', route: '/backend/announcements' },
+      { key: 'system-announcement', label: '系統公告', route: '/backend/sys' },
       { key: 'subscription-settings', label: '訂閱設定', route: '/backend/subscriptions' }
     ]
   },

@@ -185,6 +185,7 @@ import Card from '@/components/common/Card.vue'
 import { CloudUpload, X, Save } from 'lucide-vue-next'
 import { usePushDetail } from './composables/usePushDetail'
 import type { PushDetail } from './data/mockPushDetail'
+import { formatDateTime, type formatDate } from '@/utils/dateTime'
 
 const router = useRouter()
 
@@ -267,12 +268,6 @@ watch(
   },
   { immediate: true },
 )
-
-// 格式化日期時間顯示
-const formatDateTime = (dateString: string) => {
-  if (!dateString) return ''
-  return new Date(dateString).toLocaleString('zh-TW')
-}
 
 // 處理取消操作
 const handleCancel = () => {

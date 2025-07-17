@@ -101,6 +101,11 @@ const router = createRouter({
           name: 'BackendPushCreate',
           component: () => import('@/views/backend/push/PushCreatePage.vue'),
         },
+        {
+          path: 'sys',
+          name: 'BackendSys',
+          component: () => import('@/views/backend/system/SysListPage.vue'),
+        },
       ]
     }
   ],

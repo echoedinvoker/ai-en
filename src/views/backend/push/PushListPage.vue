@@ -69,7 +69,7 @@
       <!-- 推播時間欄位 - 格式化顯示 -->
       <template #column-publishTime="{ item }">
         <span class="text-sm text-gray-600">
-          {{ formatDateTime(item.publishTime) }}
+          {{ formatTime(item.publishTime, false) }}
         </span>
       </template>
 
@@ -111,6 +111,7 @@ import { usePushList } from './composables/usePushList'
 import { Search, Edit2, MessageCirclePlus } from 'lucide-vue-next'
 import type { PushItem } from './data/mockPushList'
 import { useRouter } from 'vue-router'
+import { formatTime } from '@/utils/dateTime'
 
 // 使用 composable
 const {
@@ -144,15 +145,6 @@ const tableColumns = computed(() => [
   { key: 'actions', title: '操作', align: 'center' as const, width: '120px' }
 ])
 
-// 格式化日期時間
-const formatDateTime = (dateTime: string) => {
-  const date = new Date(dateTime)
-  return date.toLocaleString('zh-TW', {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
 // 獲取狀態樣式
 const getStatusClass = (status: string) => {
   return status === 'enabled'
@@ -172,16 +164,6 @@ const handleAddPush = () => {
 
 const handleEdit = (item: PushItem) => {
   router.push(`/backend/push/${item.id}`)
-}
-
-const handleDelete = (item: PushItem) => {
-  // TODO: 實現刪除推播功能
-  console.log('刪除推播:', item)
-}
-
-const handleToggleStatus = (item: PushItem) => {
-  // TODO: 實現切換推播狀態功能
-  console.log('切換推播狀態:', item)
 }
 </script>
 
