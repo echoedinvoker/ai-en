@@ -1,231 +1,168 @@
 <template>
-  <div>
-    <h5 class="mb-3 ml-2 text-md">寫作回饋</h5>
-    <Card class="p-6" v-if="essayDetail">
-      <!-- 整體進度圓形圖 -->
-      <div class="flex justify-center mb-8">
-        <CircleProgressBar :progress="essayDetail.writingFeedback.progress" />
-      </div>
+  <div class="flex flex-col h-full">
+    <!-- 固定標題 - 不受滾動影響 -->
+    <h5 class="mb-3 ml-2 text-md flex-shrink-0">寫作回饋</h5>
 
-      <!-- 詳細回饋區塊 -->
-      <div class="space-y-4">
-        <!-- 字彙回饋 -->
-        <div class="border border-gray-200 rounded-lg">
-          <button
-            @click="toggleAccordion('vocabulary')"
-            class="w-full p-4 text-left flex gap-4 items-center justify-between hover:bg-gray-50 transition-colors"
-          >
-            <div class="flex-1 grid grid-cols-2 gap-2">
-              <h4 class="text-md font-semibold text-blue-600">字彙 (Vocabulary)</h4>
-              <LineProgressBar
-                class="flex-1"
-                :score="essayDetail.writingFeedback.vocabulary.score"
-                color="blue"
-              />
-            </div>
-            <svg
-              :class="{ 'rotate-180': activeAccordions.vocabulary }"
-              class="w-5 h-5 text-gray-500 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+    <!-- 可滾動的內容區域 -->
+    <div class="flex-1 overflow-y-auto">
+      <Card class="p-6" v-if="essayDetail">
+        <!-- 整體進度圓形圖 -->
+        <div class="flex justify-center mb-8">
+          <CircleProgressBar :progress="essayDetail.writingFeedback.progress" />
+        </div>
 
-          <!-- 展開內容 -->
-          <div
-            v-if="activeAccordions.vocabulary"
-            class="px-4 pb-4 border-t border-gray-200"
-          >
-            <div class="space-y-4">
-              <div>
-                <span class="text-sm text-gray-600">字彙/字數</span>
-                <div class="font-semibold">
-                  {{ essayDetail.writingFeedback.vocabulary.numVocabulary }}/{{
-                    essayDetail.writingFeedback.vocabulary.wordCount
-                  }}
-                </div>
-              </div>
-              <div>
-                <span class="text-sm text-gray-600">拼字錯誤</span>
-                <div class="font-semibold">
-                  {{ essayDetail.writingFeedback.vocabulary.spellingErrors }}
-                </div>
-              </div>
-              <div>
-                <span class="text-sm text-gray-600">字彙等級</span>
+        <!-- 詳細回饋區塊 -->
+        <div class="space-y-4">
+          <!-- 字彙回饋 -->
+          <Accordion v-model="activeAccordions.vocabulary">
+            <template #header>
+              <div class="grid grid-cols-2 gap-2">
+                <h4 class="text-md font-semibold text-blue-600">字彙 (Vocabulary)</h4>
                 <LineProgressBar
-                  :score="essayDetail.writingFeedback.vocabulary.vocabularyLevel"
-                  :max-score="6"
+                  class="flex-1"
+                  :score="essayDetail.writingFeedback.vocabulary.score"
                   color="blue"
-                  size="sm"
                 />
               </div>
-              <p class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
-                {{ essayDetail.writingFeedback.vocabulary.summary }}
+            </template>
+
+            <template #content>
+              <div class="space-y-4">
+                <div>
+                  <span class="text-sm text-gray-600">字彙/字數</span>
+                  <div class="font-semibold">
+                    {{ essayDetail.writingFeedback.vocabulary.numVocabulary }}/{{
+                      essayDetail.writingFeedback.vocabulary.wordCount
+                    }}
+                  </div>
+                </div>
+                <div>
+                  <span class="text-sm text-gray-600">拼字錯誤</span>
+                  <div class="font-semibold">
+                    {{ essayDetail.writingFeedback.vocabulary.spellingErrors }}
+                  </div>
+                </div>
+                <div>
+                  <span class="text-sm text-gray-600">字彙等級</span>
+                  <LineProgressBar
+                    :score="essayDetail.writingFeedback.vocabulary.vocabularyLevel"
+                    :max-score="6"
+                    color="blue"
+                    size="sm"
+                  />
+                </div>
+                <p class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
+                  {{ essayDetail.writingFeedback.vocabulary.summary }}
+                </p>
+              </div>
+            </template>
+          </Accordion>
+
+          <!-- 文法回饋 -->
+          <Accordion v-model="activeAccordions.grammar">
+            <template #header>
+              <div class="grid grid-cols-2 gap-2">
+                <h4 class="text-md font-semibold text-green-600">文法 (Grammar)</h4>
+                <LineProgressBar
+                  class="flex-1"
+                  :score="essayDetail.writingFeedback.grammar.score"
+                  color="green"
+                />
+              </div>
+            </template>
+
+            <template #content>
+              <div class="space-y-4">
+                <div>
+                  <span class="text-sm text-gray-600">型態</span>
+                  <LineProgressBar
+                    :score="essayDetail.writingFeedback.grammar.form"
+                    color="green"
+                    size="sm"
+                  />
+                </div>
+                <div>
+                  <span class="text-sm text-gray-600">介係詞</span>
+                  <LineProgressBar
+                    :score="essayDetail.writingFeedback.grammar.preposition"
+                    color="green"
+                    size="sm"
+                  />
+                </div>
+                <div>
+                  <span class="text-sm text-gray-600">標點符號</span>
+                  <LineProgressBar
+                    :score="essayDetail.writingFeedback.grammar.punctuation"
+                    color="green"
+                    size="sm"
+                  />
+                </div>
+                <p class="mt-4 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-800">
+                  {{ essayDetail.writingFeedback.grammar.summary }}
+                </p>
+              </div>
+            </template>
+          </Accordion>
+
+          <!-- 內容回饋 -->
+          <Accordion v-model="activeAccordions.content">
+            <template #header>
+              <div class="grid grid-cols-2 gap-2">
+                <h4 class="text-md font-semibold text-purple-600">內容 (Content)</h4>
+                <LineProgressBar
+                  :score="essayDetail.writingFeedback.content.score"
+                  color="purple"
+                />
+              </div>
+            </template>
+
+            <template #content>
+              <p class="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-md text-sm text-purple-800">
+                {{ essayDetail.writingFeedback.content.summary }}
               </p>
-            </div>
-          </div>
-        </div>
+            </template>
+          </Accordion>
 
-        <!-- 文法回饋 -->
-        <div class="border border-gray-200 rounded-lg">
-          <button
-            @click="toggleAccordion('grammar')"
-            class="w-full p-4 text-left flex gap-4 items-center justify-between hover:bg-gray-50 transition-colors"
-          >
-            <div class="flex-1 grid grid-cols-2 gap-2">
-              <h4 class="text-md font-semibold text-green-600">文法 (Grammar)</h4>
-              <LineProgressBar
-                class="flex-1"
-                :score="essayDetail.writingFeedback.grammar.score"
-                color="green"
-              />
-            </div>
-            <svg
-              :class="{ 'rotate-180': activeAccordions.grammar }"
-              class="w-5 h-5 text-gray-500 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+          <!-- 組織回饋 -->
+          <Accordion v-model="activeAccordions.organization">
+            <template #header>
+              <div class="grid grid-cols-2 gap-2">
+                <h4 class="text-md font-semibold text-orange-600">組織 (Organization)</h4>
+                <LineProgressBar
+                  :score="essayDetail.writingFeedback.organization.score"
+                  color="orange"
+                />
+              </div>
+            </template>
 
-          <!-- 展開內容 -->
-          <div
-            v-if="activeAccordions.grammar"
-            class="px-4 pb-4 border-t border-gray-200"
-          >
-            <div class="space-y-4">
-              <div>
-                <span class="text-sm text-gray-600">型態</span>
-                <LineProgressBar
-                  :score="essayDetail.writingFeedback.grammar.form"
-                  color="green"
-                  size="sm"
-                />
-              </div>
-              <div>
-                <span class="text-sm text-gray-600">介係詞</span>
-                <LineProgressBar
-                  :score="essayDetail.writingFeedback.grammar.preposition"
-                  color="green"
-                  size="sm"
-                />
-              </div>
-              <div>
-                <span class="text-sm text-gray-600">標點符號</span>
-                <LineProgressBar
-                  :score="essayDetail.writingFeedback.grammar.punctuation"
-                  color="green"
-                  size="sm"
-                />
-              </div>
-              <p class="mt-4 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-800">
-                {{ essayDetail.writingFeedback.grammar.summary }}
+            <template #content>
+              <p class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-md text-sm text-orange-800">
+                {{ essayDetail.writingFeedback.organization.summary }}
               </p>
-            </div>
-          </div>
+            </template>
+          </Accordion>
         </div>
-
-        <!-- 內容回饋 -->
-        <div class="border border-gray-200 rounded-lg">
-          <button
-            @click="toggleAccordion('content')"
-            class="w-full p-4 text-left flex gap-4 items-center justify-between hover:bg-gray-50 transition-colors"
-          >
-            <div class="flex-1 grid grid-cols-2 gap-2">
-              <h4 class="text-md font-semibold text-purple-600">內容 (Content)</h4>
-              <LineProgressBar
-                :score="essayDetail.writingFeedback.content.score"
-                color="purple"
-              />
-            </div>
-            <svg
-              :class="{ 'rotate-180': activeAccordions.content }"
-              class="w-5 h-5 text-gray-500 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          <!-- 展開內容 -->
-          <div
-            v-if="activeAccordions.content"
-            class="px-4 pb-4 border-t border-gray-200"
-          >
-            <p class="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-md text-sm text-purple-800">
-              {{ essayDetail.writingFeedback.content.summary }}
-            </p>
-          </div>
-        </div>
-
-        <!-- 組織回饋 -->
-        <div class="border border-gray-200 rounded-lg">
-          <button
-            @click="toggleAccordion('organization')"
-            class="w-full p-4 text-left flex gap-4 items-center justify-between hover:bg-gray-50 transition-colors"
-          >
-            <div class="flex-1 grid grid-cols-2 gap-2">
-              <h4 class="text-md font-semibold text-orange-600">組織 (Organization)</h4>
-              <LineProgressBar
-                :score="essayDetail.writingFeedback.organization.score"
-                color="orange"
-              />
-            </div>
-            <svg
-              :class="{ 'rotate-180': activeAccordions.organization }"
-              class="w-5 h-5 text-gray-500 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          <!-- 展開內容 -->
-          <div
-            v-if="activeAccordions.organization"
-            class="px-4 pb-4 border-t border-gray-200"
-          >
-            <p class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-md text-sm text-orange-800">
-              {{ essayDetail.writingFeedback.organization.summary }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import Card from '@/components/common/Card.vue'
 import CircleProgressBar from '@/components/common/CircleProgressBar.vue'
 import LineProgressBar from '@/components/common/LineProgressBar.vue'
+import Accordion from '@/components/common/Accordion.vue'
 import { useEssayDetail } from '../composables/useEssayDetail'
 
 const { essayDetail } = useEssayDetail()
 
-// 改為物件形式管理多個 accordion 狀態
+// 管理多個 accordion 狀態
 const activeAccordions = reactive({
   vocabulary: false,
   grammar: false,
   content: false,
   organization: false
 })
-
-// 切換指定 accordion 的開關狀態
-const toggleAccordion = (type: keyof typeof activeAccordions) => {
-  activeAccordions[type] = !activeAccordions[type]
-}
 </script>
 
