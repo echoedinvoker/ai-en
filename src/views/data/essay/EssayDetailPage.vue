@@ -1,42 +1,48 @@
 <template>
   <PageContainer v-if="essayDetail" class="max-w-screen-xl h-screen overflow-hidden">
-    <div class="flex gap-6 h-full">
-      <div class="flex-1 grow-3 flex-col space-y-4">
-        <EssayDetailInfo1 />
+    <div class="flex flex-col h-full">
+      <!-- 主要內容區域 -->
+      <div class="flex gap-6 flex-1">
+        <!-- 左側區域 -->
+        <div class="flex-1 grow-3 flex flex-col space-y-4">
+          <EssayDetailInfo1 />
 
-        <BaseTextarea
-          :model-value="essayDetail.content"
-          placeholder="輸入作文內容"
-          :rows="15"
-          disabled
-        />
-
-        <EssayDetailInfo2 />
-
-        <!-- 操作按鈕 -->
-        <div class="col-span-2 mt-8 flex justify-end gap-4">
-          <IconButton
-            :icon="X"
-            title="取消"
-            :iconSize="32"
-            variant="secondary"
+          <BaseTextarea
+            :model-value="essayDetail.content"
+            placeholder="輸入作文內容"
+            :rows="15"
+            disabled
           />
-          <IconButton
-            :icon="Save"
-            title="儲存"
-            :iconSize="32"
-            variant="primary"
-          />
+
+          <EssayDetailInfo2 />
+        </div>
+
+        <!-- 右側區域 -->
+        <div class="flex-1 grow-2 flex flex-col h-full">
+          <div class="flex-1 flex flex-col gap-6 overflow-hidden">
+            <EssaySuggestions class="flex-shrink-0" />
+            <!-- EssayWritingFeedback 容器設定 overflow-y-auto -->
+            <div class="flex-1 overflow-y-auto">
+              <EssayWritingFeedback />
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- 右側區域：設定固定高度和 overflow -->
-      <div class="flex-1 grow-2 flex flex-col gap-6 h-full overflow-hidden">
-        <EssaySuggestions class="flex-shrink-0" />
-        <!-- EssayWritingFeedback 容器設定 overflow-y-auto -->
-        <div class="flex-1 overflow-y-auto">
-          <EssayWritingFeedback />
-        </div>
+      <!-- 底部操作按鈕 - 整個頁面水平中心 -->
+      <div class="mt-6 flex justify-center gap-4">
+        <IconButton
+          :icon="X"
+          title="取消"
+          :iconSize="32"
+          variant="secondary"
+        />
+        <IconButton
+          :icon="Save"
+          title="儲存"
+          :iconSize="32"
+          variant="primary"
+        />
       </div>
     </div>
   </PageContainer>
@@ -55,3 +61,4 @@ import { useEssayDetail } from './composables/useEssayDetail'
 
 const { essayDetail } = useEssayDetail()
 </script>
+
