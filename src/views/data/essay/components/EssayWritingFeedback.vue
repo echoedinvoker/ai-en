@@ -47,6 +47,7 @@
                   <LineProgressBar
                     :score="essayDetail.writingFeedback.vocabulary.vocabularyLevel"
                     :max-score="6"
+                    :animated="false"
                     color="blue"
                     size="sm"
                   />
@@ -77,6 +78,7 @@
                   <span class="text-sm text-gray-600">型態</span>
                   <LineProgressBar
                     :score="essayDetail.writingFeedback.grammar.form"
+                    :animated="false"
                     color="green"
                     size="sm"
                   />
@@ -85,6 +87,7 @@
                   <span class="text-sm text-gray-600">介係詞</span>
                   <LineProgressBar
                     :score="essayDetail.writingFeedback.grammar.preposition"
+                    :animated="false"
                     color="green"
                     size="sm"
                   />
@@ -93,6 +96,7 @@
                   <span class="text-sm text-gray-600">標點符號</span>
                   <LineProgressBar
                     :score="essayDetail.writingFeedback.grammar.punctuation"
+                    :animated="false"
                     color="green"
                     size="sm"
                   />
