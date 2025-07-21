@@ -7,6 +7,7 @@
           type="text"
           label="作文ID"
           placeholder="輸入作文ID"
+          dense
           disabled
         />
         <BaseInput
@@ -14,6 +15,7 @@
           type="text"
           label="作文名稱"
           placeholder="輸入作文名稱"
+          dense
           disabled
         />
         <div></div>
@@ -23,6 +25,7 @@
           type="text"
           label="作文擁有者"
           placeholder="輸入作文擁有者"
+          dense
           disabled
         />
         <BaseInput
@@ -30,6 +33,7 @@
           type="text"
           label="試題擁有者"
           placeholder="輸入試題擁有者"
+          dense
           disabled
         />
         <div></div>
@@ -39,6 +43,7 @@
           type="text"
           label="AI批閱分數"
           placeholder="輸入AI批閱分數"
+          dense
           disabled
         />
         <BaseInput
@@ -47,6 +52,7 @@
           type="text"
           label="教師批閱分數"
           placeholder="輸入教師批閱分數"
+          dense
           disabled
         />
         <div v-else></div>

@@ -31,7 +31,7 @@
     <p v-if="error" :class="errorClasses">{{ error }}</p>
 
     <!-- Helper Text -->
-    <p v-if="helperText && !error" class="mt-1 text-sm text-gray-500">
+    <p v-if="helperText && !error" :class="helperTextClasses">
       {{ helperText }}
     </p>
   </div>
@@ -58,13 +58,15 @@ interface Props {
   min?: number | string
   step?: number | string
   height?: string
+  dense?: boolean // 新增 dense 屬性
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   disabled: false,
   readonly: false,
-  required: false
+  required: false,
+  dense: false // 預設為 false
 })
 
 const emit = defineEmits<{
@@ -78,7 +80,7 @@ const emit = defineEmits<{
 // 生成唯一的 input ID
 const inputId = computed(() => `input-${Math.random().toString(36).substr(2, 9)}`)
 
-const { inputClasses, labelClasses, errorClasses } = useFormStyles(props)
+const { inputClasses, labelClasses, errorClasses, helperTextClasses } = useFormStyles(props)
 
 // 處理輸入事件
 const handleInput = (event: Event) => {
