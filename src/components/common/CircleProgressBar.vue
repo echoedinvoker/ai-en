@@ -89,7 +89,7 @@ const animateProgress = (targetProgress: number) => {
   const startProgress = animatedProgress.value
   const progressTween = d3.interpolate(startProgress, targetProgress)
 
-  d3.select({})
+  d3.select({} as any)
     .transition()
     .duration(props.duration)
     .ease(d3.easeCubicOut) // 修正：使用正確的函數名稱
