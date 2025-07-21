@@ -33,7 +33,7 @@ export function useStaffList() {
   const router = useRouter()
   const dataTable = useDataTable(data)
 
-  // 構建查詢參數
+  // 構建查詢參數 - 加入排序參數
   const queryParams = computed<StaffSearchParams>(() => ({
     email: activeSearchForm.value.email || undefined,
     name: activeSearchForm.value.name || undefined,
@@ -41,6 +41,9 @@ export function useStaffList() {
     status: activeSearchForm.value.status === 'ALL' ? undefined : activeSearchForm.value.status,
     page: dataTable.pagination.value.currentPage,
     pageSize: dataTable.pagination.value.pageSize,
+    // 新增排序參數
+    sortField: dataTable.sorting.value.field || undefined,
+    sortOrder: dataTable.sorting.value.order || undefined,
   }))
 
   // 使用 Query 獲取資料
@@ -143,7 +146,7 @@ export function useStaffList() {
   }
 
   return {
-    ...dataTable,
+    ...dataTable, // 這裡已經包含了 sorting 和 handleSortChange
 
     // 狀態（現在是共享的）
     searchForm,

@@ -14,6 +14,8 @@ export interface StaffSearchParams {
   status?: string
   page?: number
   pageSize?: number
+  sortField?: string
+  sortOrder?: 'asc' | 'desc'
 }
 
 // API 回應介面
@@ -81,6 +83,48 @@ export const mockStaffList: StaffListItem[] = [
 // 模擬 API 延遲
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
+// 排序函數
+const sortData = (data: StaffListItem[], sortField?: string, sortOrder?: 'asc' | 'desc'): StaffListItem[] => {
+  if (!sortField || !sortOrder) {
+    return data
+  }
+
+  return [...data].sort((a, b) => {
+    let aValue: any = a[sortField as keyof StaffListItem]
+    let bValue: any = b[sortField as keyof StaffListItem]
+
+    // 處理不同資料類型的排序
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      // 字串排序（忽略大小寫）
+      aValue = aValue.toLowerCase()
+      bValue = bValue.toLowerCase()
+    }
+
+    // 特殊處理：角色排序（按重要性排序）
+    if (sortField === 'role') {
+      const roleOrder = { admin: 4, manager: 3, teacher: 2, assistant: 1 }
+      aValue = roleOrder[aValue as keyof typeof roleOrder] || 0
+      bValue = roleOrder[bValue as keyof typeof roleOrder] || 0
+    }
+
+    // 特殊處理：狀態排序
+    if (sortField === 'status') {
+      const statusOrder = { active: 3, reserved: 2, suspended: 1 }
+      aValue = statusOrder[aValue as keyof typeof statusOrder] || 0
+      bValue = statusOrder[bValue as keyof typeof statusOrder] || 0
+    }
+
+    // 執行排序比較
+    if (aValue < bValue) {
+      return sortOrder === 'asc' ? -1 : 1
+    }
+    if (aValue > bValue) {
+      return sortOrder === 'asc' ? 1 : -1
+    }
+    return 0
+  })
+}
+
 // 模擬 API 函數
 export const staffApi = {
   // 獲取員工列表
@@ -93,7 +137,9 @@ export const staffApi = {
       role = 'ALL',
       status = 'ALL',
       page = 1,
-      pageSize = 10
+      pageSize = 10,
+      sortField,
+      sortOrder
     } = params
 
     // 過濾資料
@@ -120,6 +166,9 @@ export const staffApi = {
 
       return true
     })
+
+    // 排序處理
+    filteredStaff = sortData(filteredStaff, sortField, sortOrder)
 
     // 分頁處理
     const total = filteredStaff.length

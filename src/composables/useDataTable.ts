@@ -6,10 +6,21 @@ export interface Pagination {
   pageSize: number
 }
 
+export interface Sorting {
+  field: string
+  order: 'asc' | 'desc'
+}
+
 export function useDataTable(data: Ref) {
   const pagination = ref<Pagination>({
     currentPage: 1,
     pageSize: 10,
+  })
+
+  // 新增排序狀態
+  const sorting = ref<Sorting>({
+    field: '',
+    order: 'asc'
   })
 
   const totalRecords = computed(() => data.value?.total || 0)
@@ -60,9 +71,17 @@ export function useDataTable(data: Ref) {
     pagination.value.currentPage = 1
   }
 
+  // 排序操作
+  const handleSortChange = (field: string, order: 'asc' | 'desc') => {
+    sorting.value.field = field
+    sorting.value.order = order
+    // 排序時回到第一頁
+    pagination.value.currentPage = 1
+  }
 
   return {
     pagination,
+    sorting,
     totalRecords,
     totalPages,
     startRecord,
@@ -70,6 +89,7 @@ export function useDataTable(data: Ref) {
     visiblePages,
     goToPage,
     handlePageSizeChange,
+    handleSortChange,
   }
 }
 

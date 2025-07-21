@@ -30,13 +30,16 @@ export function useStudentsList() {
   const router = useRouter()
   const dataTable = useDataTable(data)
 
-  // 構建查詢參數
+  // 構建查詢參數 - 包含排序參數
   const queryParams = computed<StudentSearchParams>(() => ({
     email: activeSearchForm.value.email || undefined,
     name: activeSearchForm.value.name || undefined,
     status: activeSearchForm.value.status === 'ALL' ? undefined : activeSearchForm.value.status,
     page: dataTable.pagination.value.currentPage,
     pageSize: dataTable.pagination.value.pageSize,
+    // 加入排序參數
+    sortField: dataTable.sorting.value.field || undefined,
+    sortOrder: dataTable.sorting.value.field ? dataTable.sorting.value.order : undefined,
   }))
 
   // 使用 Query 獲取資料

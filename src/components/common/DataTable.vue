@@ -29,10 +29,42 @@
               :class="[
                 'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50',
                 column.align === 'center' ? 'text-center' :
-                column.align === 'right' ? 'text-right' : 'text-left'
+                column.align === 'right' ? 'text-right' : 'text-left',
+                column.sortable ? 'cursor-pointer select-none hover:bg-gray-100' : ''
               ]"
+              @click="column.sortable ? handleSort(column.key) : null"
             >
-              {{ column.title }}
+              <div class="flex items-center" :class="[
+                column.align === 'center' ? 'justify-center' :
+                column.align === 'right' ? 'justify-end' : 'justify-start'
+              ]">
+                <span>{{ column.title }}</span>
+                <!-- 排序圖示 -->
+                <div v-if="column.sortable" class="ml-1 flex flex-col">
+                  <svg
+                    :class="[
+                      'w-3 h-3 transition-colors',
+                      sortField === column.key && sortOrder === 'asc'
+                        ? 'text-blue-600' : 'text-gray-400'
+                    ]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                  </svg>
+                  <svg
+                    :class="[
+                      'w-3 h-3 -mt-1 transition-colors transform rotate-180',
+                      sortField === column.key && sortOrder === 'desc'
+                        ? 'text-blue-600' : 'text-gray-400'
+                    ]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                  </svg>
+                </div>
+              </div>
             </th>
           </tr>
         </thead>
@@ -172,6 +204,7 @@ interface Column {
   title: string
   align?: 'left' | 'center' | 'right'
   textColor?: string
+  sortable?: boolean  // 新增 sortable 屬性
 }
 
 interface Props {
@@ -192,14 +225,18 @@ interface Props {
   showPageSizeSelector?: boolean
   pageSizeOptions?: number[]
 
+  // 排序相關
+  sortField?: string
+  sortOrder?: 'asc' | 'desc'
+
   // 其他設定
   emptyText?: string
   recordName?: string
   rowKey?: string | ((item: any, index: number) => string | number)
 
   // 格高度相關
-  reservedHeight?: number  // 預留給其他元素的高度
-  enableStickyHeader?: boolean  // 是否啟用固定表頭
+  reservedHeight?: number
+  enableStickyHeader?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -212,12 +249,34 @@ const props = withDefaults(defineProps<Props>(), {
   totalRecords: 0,
   showPageSizeSelector: true,
   pageSizeOptions: () => [5, 10, 20, 50],
+  sortField: '',
+  sortOrder: 'asc',
   emptyText: '沒有資料',
   recordName: '資料',
   rowKey: 'id',
   reservedHeight: 350,
   enableStickyHeader: true
 })
+
+// 定義 emits
+const emit = defineEmits<{
+  'page-change': [page: number]
+  'page-size-change': [pageSize: number]
+  'sort-change': [field: string, order: 'asc' | 'desc']
+  'retry': []
+}>()
+
+// 排序處理
+const handleSort = (field: string) => {
+  let newOrder: 'asc' | 'desc' = 'asc'
+
+  // 如果點擊的是當前排序欄位，則切換排序方向
+  if (props.sortField === field) {
+    newOrder = props.sortOrder === 'asc' ? 'desc' : 'asc'
+  }
+
+  emit('sort-change', field, newOrder)
+}
 
 // 計算屬性
 const totalPages = computed(() => Math.ceil(props.totalRecords / props.pageSize))
@@ -236,12 +295,11 @@ const endRecord = computed(() => {
 const visiblePages = computed(() => {
   const total = totalPages.value
   const current = props.currentPage
-  const delta = 2 // 當前頁前後顯示的頁數
+  const delta = 2
 
   let start = Math.max(1, current - delta)
   let end = Math.min(total, current + delta)
 
-  // 確保至少顯示 5 個頁碼（如果總頁數足夠）
   if (end - start < 4) {
     if (start === 1) {
       end = Math.min(total, start + 4)
@@ -286,9 +344,8 @@ onUnmounted(() => {
 
 // 動態計算表格最大高度
 const tableMaxHeight = computed(() => {
-  // 預留給頁面其他元素的空間（header、pagination 等）
   if (!props.enableStickyHeader) {
-    return 'none'  // 不啟用時不限制高度
+    return 'none'
   }
   return `${windowHeight.value - props.reservedHeight}px`
 })

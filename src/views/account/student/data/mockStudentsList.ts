@@ -13,6 +13,8 @@ export interface StudentSearchParams {
   status?: string
   page?: number
   pageSize?: number
+  sortField?: string  // 新增排序欄位
+  sortOrder?: 'asc' | 'desc'  // 新增排序方向
 }
 
 // API 回應介面
@@ -80,6 +82,29 @@ export const mockStudentsList: StudentListItem[] = [
 // 模擬 API 延遲
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
+// 排序函數
+const sortData = (data: StudentListItem[], field: string, order: 'asc' | 'desc') => {
+  return [...data].sort((a, b) => {
+    let aValue = a[field as keyof StudentListItem]
+    let bValue = b[field as keyof StudentListItem]
+
+    // 處理數字類型
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return order === 'asc' ? aValue - bValue : bValue - aValue
+    }
+
+    // 處理字串類型
+    const aStr = String(aValue).toLowerCase()
+    const bStr = String(bValue).toLowerCase()
+
+    if (order === 'asc') {
+      return aStr.localeCompare(bStr)
+    } else {
+      return bStr.localeCompare(aStr)
+    }
+  })
+}
+
 // 模擬 API 函數
 export const studentApi = {
   // 獲取學生列表
@@ -91,7 +116,9 @@ export const studentApi = {
       name = '',
       status = 'ALL',
       page = 1,
-      pageSize = 10
+      pageSize = 10,
+      sortField = '',
+      sortOrder = 'asc'
     } = params
 
     // 過濾資料
@@ -113,6 +140,11 @@ export const studentApi = {
 
       return true
     })
+
+    // 排序處理
+    if (sortField) {
+      filteredStudents = sortData(filteredStudents, sortField, sortOrder)
+    }
 
     // 分頁處理
     const total = filteredStudents.length

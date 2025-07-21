@@ -15,10 +15,13 @@
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
       :total-records="totalRecords"
+      :sort-field="sorting.field"
+      :sort-order="sorting.order"
       record-name="員工資料"
       empty-text="沒有符合條件的員工資料"
       @page-change="goToPage"
       @page-size-change="handlePageSizeChange"
+      @sort-change="handleSortChange"
       @retry="refetch"
     >
       <!-- 自定義角色欄位 -->
@@ -59,6 +62,7 @@ import PageContainer from '@/components/common/PageContainer.vue'
 // 使用 composable
 const {
   pagination,
+  sorting, // 新增 sorting 狀態
   staff,
   totalRecords,
   isLoading,
@@ -66,6 +70,7 @@ const {
   handleEdit,
   goToPage,
   handlePageSizeChange,
+  handleSortChange, // 新增 sorting 處理函數
   getStatusClass,
   getStatusText,
   getRoleClass,
@@ -73,12 +78,12 @@ const {
   refetch,
 } = useStaffList()
 
-// 定義表格欄位
+// 定義表格欄位 - 為需要排序的欄位加上 sortable: true
 const tableColumns = computed(() => [
-  { key: 'email', title: 'Email' },
-  { key: 'name', title: '姓名' },
-  { key: 'role', title: '角色', align: 'center' as const },
-  { key: 'status', title: '帳號狀態', align: 'center' as const },
+  { key: 'email', title: 'Email', sortable: true },
+  { key: 'name', title: '姓名', sortable: true },
+  { key: 'role', title: '角色', align: 'center' as const, sortable: true },
+  { key: 'status', title: '帳號狀態', align: 'center' as const, sortable: true },
   { key: 'actions', title: '操作', align: 'center' as const }
 ])
 </script>
