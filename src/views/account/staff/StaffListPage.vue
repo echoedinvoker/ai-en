@@ -40,11 +40,13 @@
 
       <!-- 自定義操作欄位 -->
       <template #column-actions="{ item }">
-        <button @click="handleEdit(item)"
-          class="text-blue-600 hover:text-blue-900 focus:outline-none p-1 rounded hover:bg-blue-50 cursor-pointer"
-          title="編輯">
-          <Edit2 :size="16" />
-        </button>
+        <IconButton
+          :icon="Edit2"
+          :icon-size="16"
+          variant="table-action"
+          title="編輯"
+          @click="handleEdit(item)"
+        />
       </template>
     </DataTable>
   </PageContainer>
@@ -58,6 +60,7 @@ import DataTable from '@/components/common/DataTable.vue'
 import StaffSearchForm from './components/StaffSearchForm.vue'
 import { useStaffList } from './composables/useStaffList'
 import PageContainer from '@/components/common/PageContainer.vue'
+import IconButton from '@/components/common/IconButton.vue'
 
 // 使用 composable
 const {

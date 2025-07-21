@@ -14,54 +14,48 @@
     </div>
 
     <!-- Table 區 -->
-    <div
-      v-else
-      ref="tableContainer"
-      class="overflow-auto"
-      :style="{ maxHeight: tableMaxHeight }"
-    >
+    <div v-else ref="tableContainer" class="overflow-auto" :style="{ maxHeight: tableMaxHeight }">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50 sticky top-0 z-10">
           <tr>
-            <th
-              v-for="column in columns"
-              :key="column.key"
-              :class="[
-                'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50',
-                column.align === 'center' ? 'text-center' :
-                column.align === 'right' ? 'text-right' : 'text-left',
-                column.sortable ? 'cursor-pointer select-none hover:bg-gray-100' : ''
-              ]"
-              @click="column.sortable ? handleSort(column.key) : null"
-            >
+            <th v-for="column in columns" :key="column.key" :class="[
+              'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50',
+              column.align === 'center'
+                ? 'text-center'
+                : column.align === 'right'
+                  ? 'text-right'
+                  : 'text-left',
+              column.sortable ? 'cursor-pointer select-none hover:bg-gray-100' : '',
+            ]" @click="column.sortable ? handleSort(column.key) : null">
               <div class="flex items-center" :class="[
-                column.align === 'center' ? 'justify-center' :
-                column.align === 'right' ? 'justify-end' : 'justify-start'
+                column.align === 'center'
+                  ? 'justify-center'
+                  : column.align === 'right'
+                    ? 'justify-end'
+                    : 'justify-start',
               ]">
                 <span>{{ column.title }}</span>
                 <!-- 排序圖示 -->
                 <div v-if="column.sortable" class="ml-1 flex flex-col">
-                  <svg
-                    :class="[
-                      'w-3 h-3 transition-colors',
-                      sortField === column.key && sortOrder === 'asc'
-                        ? 'text-blue-600' : 'text-gray-400'
-                    ]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                  <!-- 向上箭頭 (升序) -->
+                  <svg :class="[
+                    'w-3 h-3 transition-colors transform rotate-180',
+                    sortField === column.key && sortOrder === 'asc'
+                      ? 'text-blue-600'
+                      : 'text-gray-400',
+                  ]" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                   </svg>
-                  <svg
-                    :class="[
-                      'w-3 h-3 -mt-1 transition-colors transform rotate-180',
-                      sortField === column.key && sortOrder === 'desc'
-                        ? 'text-blue-600' : 'text-gray-400'
-                    ]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                  <!-- 向下箭頭 (降序) -->
+                  <svg :class="[
+                    'w-3 h-3 -mt-1 transition-colors',
+                    sortField === column.key && sortOrder === 'desc'
+                      ? 'text-blue-600'
+                      : 'text-gray-400',
+                  ]" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                   </svg>
                 </div>
               </div>
@@ -81,23 +75,18 @@
 
           <!-- 資料行 -->
           <tr v-for="(item, index) in data" :key="getRowKey(item, index)" class="hover:bg-gray-50">
-            <td
-              v-for="column in columns"
-              :key="column.key"
-              :class="[
-                'px-6 py-4 whitespace-nowrap text-sm',
-                column.align === 'center' ? 'text-center' :
-                column.align === 'right' ? 'text-right' : 'text-left',
-                column.textColor || 'text-gray-900'
-              ]"
-            >
+            <td v-for="column in columns" :key="column.key" :class="[
+              'px-6 py-4 whitespace-nowrap text-sm',
+              column.align === 'center'
+                ? 'text-center'
+                : column.align === 'right'
+                  ? 'text-right'
+                  : 'text-left',
+              column.textColor || 'text-gray-900',
+            ]">
               <!-- 使用 slot 自定義欄位內容 -->
-              <slot
-                :name="`column-${column.key}`"
-                :item="item"
-                :value="getColumnValue(item, column.key)"
-                :index="index"
-              >
+              <slot :name="`column-${column.key}`" :item="item" :value="getColumnValue(item, column.key)"
+                :index="index">
                 <!-- 預設顯示 -->
                 {{ getColumnValue(item, column.key) }}
               </slot>
@@ -126,11 +115,10 @@
           <!-- 每頁筆數選擇 -->
           <div v-if="showPageSizeSelector" class="flex items-center space-x-2">
             <label class="text-sm text-gray-700">每頁顯示：</label>
-            <select
-              :value="pageSize"
-              @change="$emit('page-size-change', Number(($event.target as HTMLSelectElement)?.value))"
-              class="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
+            <select :value="pageSize" @change="
+              $emit('page-size-change', Number(($event.target as HTMLSelectElement)?.value))
+              "
+              class="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option v-for="size in pageSizeOptions" :key="size" :value="size">
                 {{ size }}
               </option>
@@ -141,51 +129,34 @@
 
         <!-- 分頁按鈕 -->
         <div class="flex items-center space-x-2">
-          <button
-            @click="$emit('page-change', 1)"
-            :disabled="currentPage === 1"
-            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="$emit('page-change', 1)" :disabled="currentPage === 1"
+            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             首頁
           </button>
 
-          <button
-            @click="$emit('page-change', currentPage - 1)"
-            :disabled="currentPage === 1"
-            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="$emit('page-change', currentPage - 1)" :disabled="currentPage === 1"
+            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             上一頁
           </button>
 
           <div class="flex space-x-1">
-            <button
-              v-for="page in visiblePages"
-              :key="page"
-              @click="$emit('page-change', page)"
-              :class="[
-                'px-3 py-1 text-sm border rounded',
-                page === currentPage
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'border-gray-300 hover:bg-gray-50',
-              ]"
-            >
+            <button v-for="page in visiblePages" :key="page" @click="$emit('page-change', page)" :class="[
+              'px-3 py-1 text-sm border rounded',
+              page === currentPage
+                ? 'bg-blue-500 text-white border-blue-500'
+                : 'border-gray-300 hover:bg-gray-50',
+            ]">
               {{ page }}
             </button>
           </div>
 
-          <button
-            @click="$emit('page-change', currentPage + 1)"
-            :disabled="currentPage === totalPages"
-            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="$emit('page-change', currentPage + 1)" :disabled="currentPage === totalPages"
+            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             下一頁
           </button>
 
-          <button
-            @click="$emit('page-change', totalPages)"
-            :disabled="currentPage === totalPages"
-            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="$emit('page-change', totalPages)" :disabled="currentPage === totalPages"
+            class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             末頁
           </button>
         </div>
@@ -204,7 +175,7 @@ interface Column {
   title: string
   align?: 'left' | 'center' | 'right'
   textColor?: string
-  sortable?: boolean  // 新增 sortable 屬性
+  sortable?: boolean // 新增 sortable 屬性
 }
 
 interface Props {
@@ -255,7 +226,7 @@ const props = withDefaults(defineProps<Props>(), {
   recordName: '資料',
   rowKey: 'id',
   reservedHeight: 350,
-  enableStickyHeader: true
+  enableStickyHeader: true,
 })
 
 // 定義 emits
@@ -263,7 +234,7 @@ const emit = defineEmits<{
   'page-change': [page: number]
   'page-size-change': [pageSize: number]
   'sort-change': [field: string, order: 'asc' | 'desc']
-  'retry': []
+  retry: []
 }>()
 
 // 排序處理
@@ -350,4 +321,3 @@ const tableMaxHeight = computed(() => {
   return `${windowHeight.value - props.reservedHeight}px`
 })
 </script>
-

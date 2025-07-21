@@ -3,16 +3,16 @@
     <!-- 固定標題 - 不受滾動影響 -->
     <h5 class="mb-3 ml-2 text-md flex-shrink-0">寫作回饋</h5>
 
-    <!-- 可滾動的內容區域 -->
-    <div class="flex-1 overflow-y-auto">
+    <!-- 可滾動的內容區域 - 添加最小高度限制 -->
+    <div class="flex-1 overflow-y-auto min-h-0">
       <Card class="p-6" v-if="essayDetail">
         <!-- 整體進度圓形圖 -->
         <div class="flex justify-center mb-8">
           <CircleProgressBar :progress="essayDetail.writingFeedback.progress" />
         </div>
 
-        <!-- 詳細回饋區塊 -->
-        <div class="space-y-4">
+        <!-- 詳細回饋區塊 - 限制最大高度 -->
+        <div class="space-y-4 max-h-full">
           <!-- 字彙回饋 -->
           <Accordion v-model="activeAccordions.vocabulary">
             <template #header>

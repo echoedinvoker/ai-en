@@ -38,6 +38,8 @@ const variants = {
   secondary: 'text-gray-700 border border-gray-300 hover:bg-gray-50',
   success: 'bg-green-500 text-white border-green-500 hover:bg-green-600 hover:border-green-600 focus:ring-green-400',
   danger: 'bg-red-500 text-white border-red-500 hover:bg-red-600 hover:border-red-600 focus:ring-red-400',
+  // 表格操作按鈕樣式 - 適用於所有表格中的操作按鈕
+  'table-action': 'text-blue-600 border-transparent hover:text-blue-900 hover:bg-blue-50 focus:ring-blue-400 p-1',
 }
 
 defineProps<{

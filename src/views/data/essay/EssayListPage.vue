@@ -20,12 +20,13 @@
     >
       <!-- 自定義操作欄位 -->
       <template #column-actions="{ item }">
-        <button
+        <IconButton
+          :icon="FileText"
+          :icon-size="16"
+          variant="table-action"
+          title="編輯"
           @click="handleClickDetail(item)"
-          class="text-blue-600 hover:text-blue-900 focus:outline-none p-1 rounded hover:bg-blue-50 cursor-pointer"
-          title="詳細內容">
-          <FileText :size="22" />
-        </button>
+        />
       </template>
     </DataTable>
   </PageContainer>
@@ -39,6 +40,7 @@ import EssaySearchForm from './components/EssaySearchForm.vue';
 import { useEssayList }from './composables/useEssayList';
 import { computed } from 'vue';
 import { FileText } from 'lucide-vue-next';
+import IconButton from '@/components/common/IconButton.vue';
 import { useRouter } from 'vue-router';
 
 const {
