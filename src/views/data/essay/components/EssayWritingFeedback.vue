@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h5 class="mb-3 ml-2 text-md">寫作回饋</h5>
     <Card class="p-6" v-if="essayDetail">
       <!-- 整體進度圓形圖 -->
       <div class="flex justify-center mb-8">
@@ -14,15 +15,16 @@
             @click="toggleAccordion('vocabulary')"
             class="w-full p-4 text-left flex gap-4 items-center justify-between hover:bg-gray-50 transition-colors"
           >
-            <!-- 修改為並排顯示 -->
             <div class="flex-1 grid grid-cols-2 gap-2">
               <h4 class="text-md font-semibold text-blue-600">字彙 (Vocabulary)</h4>
               <LineProgressBar
                 class="flex-1"
-              :score="essayDetail.writingFeedback.vocabulary.score" color="blue" />
+                :score="essayDetail.writingFeedback.vocabulary.score"
+                color="blue"
+              />
             </div>
             <svg
-              :class="{ 'rotate-180': activeAccordion === 'vocabulary' }"
+              :class="{ 'rotate-180': activeAccordions.vocabulary }"
               class="w-5 h-5 text-gray-500 transition-transform"
               fill="none"
               stroke="currentColor"
@@ -34,7 +36,7 @@
 
           <!-- 展開內容 -->
           <div
-            v-if="activeAccordion === 'vocabulary'"
+            v-if="activeAccordions.vocabulary"
             class="px-4 pb-4 border-t border-gray-200"
           >
             <div class="space-y-4">
@@ -61,7 +63,6 @@
                   size="sm"
                 />
               </div>
-              <!-- 修改：添加 alert 樣式和上方 margin -->
               <p class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
                 {{ essayDetail.writingFeedback.vocabulary.summary }}
               </p>
@@ -79,10 +80,12 @@
               <h4 class="text-md font-semibold text-green-600">文法 (Grammar)</h4>
               <LineProgressBar
                 class="flex-1"
-                :score="essayDetail.writingFeedback.grammar.score" color="green" />
+                :score="essayDetail.writingFeedback.grammar.score"
+                color="green"
+              />
             </div>
             <svg
-              :class="{ 'rotate-180': activeAccordion === 'grammar' }"
+              :class="{ 'rotate-180': activeAccordions.grammar }"
               class="w-5 h-5 text-gray-500 transition-transform"
               fill="none"
               stroke="currentColor"
@@ -94,7 +97,7 @@
 
           <!-- 展開內容 -->
           <div
-            v-if="activeAccordion === 'grammar'"
+            v-if="activeAccordions.grammar"
             class="px-4 pb-4 border-t border-gray-200"
           >
             <div class="space-y-4">
@@ -122,7 +125,6 @@
                   size="sm"
                 />
               </div>
-              <!-- 修改：添加 alert 樣式和上方 margin -->
               <p class="mt-4 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-800">
                 {{ essayDetail.writingFeedback.grammar.summary }}
               </p>
@@ -138,10 +140,13 @@
           >
             <div class="flex-1 grid grid-cols-2 gap-2">
               <h4 class="text-md font-semibold text-purple-600">內容 (Content)</h4>
-              <LineProgressBar :score="essayDetail.writingFeedback.content.score" color="purple" />
+              <LineProgressBar
+                :score="essayDetail.writingFeedback.content.score"
+                color="purple"
+              />
             </div>
             <svg
-              :class="{ 'rotate-180': activeAccordion === 'content' }"
+              :class="{ 'rotate-180': activeAccordions.content }"
               class="w-5 h-5 text-gray-500 transition-transform"
               fill="none"
               stroke="currentColor"
@@ -153,10 +158,9 @@
 
           <!-- 展開內容 -->
           <div
-            v-if="activeAccordion === 'content'"
+            v-if="activeAccordions.content"
             class="px-4 pb-4 border-t border-gray-200"
           >
-            <!-- 修改：添加 alert 樣式和上方 margin -->
             <p class="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-md text-sm text-purple-800">
               {{ essayDetail.writingFeedback.content.summary }}
             </p>
@@ -177,7 +181,7 @@
               />
             </div>
             <svg
-              :class="{ 'rotate-180': activeAccordion === 'organization' }"
+              :class="{ 'rotate-180': activeAccordions.organization }"
               class="w-5 h-5 text-gray-500 transition-transform"
               fill="none"
               stroke="currentColor"
@@ -189,10 +193,9 @@
 
           <!-- 展開內容 -->
           <div
-            v-if="activeAccordion === 'organization'"
+            v-if="activeAccordions.organization"
             class="px-4 pb-4 border-t border-gray-200"
           >
-            <!-- 修改：添加 alert 樣式和上方 margin -->
             <p class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-md text-sm text-orange-800">
               {{ essayDetail.writingFeedback.organization.summary }}
             </p>
@@ -204,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import Card from '@/components/common/Card.vue'
 import CircleProgressBar from '@/components/common/CircleProgressBar.vue'
 import LineProgressBar from '@/components/common/LineProgressBar.vue'
@@ -212,13 +215,17 @@ import { useEssayDetail } from '../composables/useEssayDetail'
 
 const { essayDetail } = useEssayDetail()
 
-// Accordion 狀態管理
-type AccordionType = 'vocabulary' | 'grammar' | 'content' | 'organization'
-const activeAccordion = ref<AccordionType | null>(null)
+// 改為物件形式管理多個 accordion 狀態
+const activeAccordions = reactive({
+  vocabulary: false,
+  grammar: false,
+  content: false,
+  organization: false
+})
 
-// 切換 accordion 狀態，一次只能展開一個
-const toggleAccordion = (type: AccordionType) => {
-  activeAccordion.value = activeAccordion.value === type ? null : type
+// 切換指定 accordion 的開關狀態
+const toggleAccordion = (type: keyof typeof activeAccordions) => {
+  activeAccordions[type] = !activeAccordions[type]
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
-  <PageContainer v-if="essayDetail" class="max-w-screen-xl">
-    <div class="flex gap-6 h-screen">
+  <PageContainer v-if="essayDetail" class="max-w-screen-xl h-screen overflow-hidden">
+    <div class="flex gap-6 h-full">
       <div class="flex-1 grow-3 flex-col space-y-4">
         <EssayDetailInfo1 />
 
@@ -31,7 +31,7 @@
       </div>
 
       <!-- 右側區域：設定固定高度和 overflow -->
-      <div class="flex-1 grow-2 flex flex-col gap-4 h-full overflow-hidden">
+      <div class="flex-1 grow-2 flex flex-col gap-6 h-full overflow-hidden">
         <EssaySuggestions class="flex-shrink-0" />
         <!-- EssayWritingFeedback 容器設定 overflow-y-auto -->
         <div class="flex-1 overflow-y-auto">
